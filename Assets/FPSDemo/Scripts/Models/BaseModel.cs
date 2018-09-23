@@ -1,18 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-//TODO: review MVC for multiple models of one type
-public class BaseModel : MonoBehaviour
+namespace FPSDemo
 {
-	public Action OnInit;
-	
-	protected bool _isInited;
-
-	public bool IsInited => _isInited;
-
-	protected void Awake()
+//TODO: review MVC for multiple models of one type
+	public class BaseModel : MonoBehaviour
 	{
-		_isInited = true;
-		OnInit?.Invoke();
+		public Action OnInit;
+
+		protected bool _isInited;
+
+		public bool IsInited => _isInited;
+
+		protected void Awake()
+		{
+			_isInited = true;
+			OnInit?.Invoke();
+		}
 	}
 }

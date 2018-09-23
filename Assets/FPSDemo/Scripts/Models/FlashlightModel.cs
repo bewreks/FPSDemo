@@ -1,62 +1,63 @@
 ﻿using System;
 using UnityEngine;
 
-public class FlashlightModel : BaseModel
+namespace FPSDemo
 {
-    public Action<bool> OnSwitch;
-    public Action<float> OnIntensityChange;
-    public Action<float> OnTimerChange;
 
-    public float MinRate = 0.2f;
-    public AnimationCurve IntensityCurve;
-
-    [SerializeField] private float _maxTimer;
-    [SerializeField] private float _baseIntensity;
-
-    private bool _isOn;
-    private float _intensity;
-    private float _timer;
-
-    protected void Awake()
+    public class FlashlightModel : BaseModel
     {
-        _isOn = false;
-        _intensity = _baseIntensity;
-        _timer = 0;
-        base.Awake();
-    }
+        public Action<bool> OnSwitch;
+        public Action<float> OnIntensityChange;
+        public Action<float> OnTimerChange;
 
-    public bool IsOn
-    {
-        get { return _isOn; }
-        set
-        {
-            _isOn = value;
-            OnSwitch?.Invoke(_isOn);
-        }
-    }
+        public float MinRate = 0.2f;
+        public AnimationCurve IntensityCurve;
 
-    public float Intensity
-    {
-        get { return _intensity + _baseIntensity; }
-        set
-        {
-            _intensity = value;
-            OnIntensityChange?.Invoke(Intensity);
-        }
-    }
+        [SerializeField] private float _maxTimer;
+        [SerializeField] private float _baseIntensity;
 
-    public float Timer
-    {
-        get
-        {
-            return _timer;
-        }
-        set
-        {
-            _timer = value;
-            OnTimerChange?.Invoke(TimerCoef);
-        }
-    }
+        private bool _isOn;
+        private float _intensity;
+        private float _timer;
 
-    public float TimerCoef => (_maxTimer + _timer) / _maxTimer;
+        protected void Awake()
+        {
+            _isOn = false;
+            _intensity = _baseIntensity;
+            _timer = 0;
+            base.Awake();
+        }
+
+        public bool IsOn
+        {
+            get { return _isOn; }
+            set
+            {
+                _isOn = value;
+                OnSwitch?.Invoke(_isOn);
+            }
+        }
+
+        public float Intensity
+        {
+            get { return _intensity + _baseIntensity; }
+            set
+            {
+                _intensity = value;
+                OnIntensityChange?.Invoke(Intensity);
+            }
+        }
+
+        public float Timer
+        {
+            get { return _timer; }
+            set
+            {
+                _timer = value;
+                OnTimerChange?.Invoke(TimerCoef);
+            }
+        }
+
+        public float TimerCoef => (_maxTimer + _timer) / _maxTimer;
+    }
 }

@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashlightView : BaseView<FlashlightModel>
+namespace FPSDemo
 {
-    protected Light _light;
-    
-    protected override void Awake()
+    public class FlashlightView : BaseView<FlashlightModel>
     {
-        _light = GetComponent<Light>();
-        base.Awake();
-    }
+        protected Light _light;
 
-    protected override void InitializeView()
-    {
-        _model.OnSwitch += OnSwitch;
-        _model.OnIntensityChange += OnIntensityChange;
-        OnIntensityChange(_model.Intensity);
-        OnSwitch(_model.IsOn);
-    }
+        protected override void Awake()
+        {
+            _light = GetComponent<Light>();
+            base.Awake();
+        }
 
-    private void OnIntensityChange(float intensity)
-    {
-        _light.intensity = intensity;
-    }
+        protected override void InitializeView()
+        {
+            _model.OnSwitch += OnSwitch;
+            _model.OnIntensityChange += OnIntensityChange;
+            OnIntensityChange(_model.Intensity);
+            OnSwitch(_model.IsOn);
+        }
 
-    private void OnSwitch(bool isOn)
-    {
-        _light.enabled = isOn;
+        private void OnIntensityChange(float intensity)
+        {
+            _light.intensity = intensity;
+        }
+
+        private void OnSwitch(bool isOn)
+        {
+            _light.enabled = isOn;
+        }
     }
 }

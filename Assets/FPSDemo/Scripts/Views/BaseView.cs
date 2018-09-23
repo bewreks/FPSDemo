@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseView<M> : MonoBehaviour where M : BaseModel
+namespace FPSDemo
 {
-	protected M _model;
-	
-	protected virtual void Awake()
+	public abstract class BaseView<M> : MonoBehaviour where M : BaseModel
 	{
-		_model = FindObjectOfType<M>();
-		if (_model.IsInited)
-		{
-			InitializeView();
-		}
-		else
-		{
-			_model.OnInit += InitializeView;
-		}
-	}
+		protected M _model;
 
-	protected abstract void InitializeView();
+		protected virtual void Awake()
+		{
+			_model = FindObjectOfType<M>();
+			if (_model.IsInited)
+			{
+				InitializeView();
+			}
+			else
+			{
+				_model.OnInit += InitializeView;
+			}
+		}
+
+		protected abstract void InitializeView();
+	}
 }
