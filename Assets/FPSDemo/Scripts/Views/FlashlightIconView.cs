@@ -6,6 +6,7 @@ namespace FPSDemo
 {
 	public class FlashlightIconView : BaseView<FlashlightModel>
 	{
+		[SerializeField] private Image _background;
 		private Image _image;
 
 		private bool _isOn;
@@ -59,8 +60,9 @@ namespace FPSDemo
 			{
 				_image.enabled = _coef < 1;
 			}
-			
-			
+
+			_background.enabled = _image.enabled;
+
 		}
 	}
 }
