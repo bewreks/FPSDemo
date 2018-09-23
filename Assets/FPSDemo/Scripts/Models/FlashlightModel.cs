@@ -8,6 +8,7 @@ public class FlashlightModel : BaseModel
     public Action<float> OnTimerChange;
 
     public float MinRate = 0.2f;
+    public AnimationCurve IntensityCurve;
 
     [SerializeField] private float _maxTimer;
     [SerializeField] private float _baseIntensity;

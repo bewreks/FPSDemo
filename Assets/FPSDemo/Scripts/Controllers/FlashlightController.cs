@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlashlightController : BaseController<FlashlightModel>
 {
     private const float Rate = 0.01f;
-    
+
     protected override void Awake()
     {
         _model = FindObjectOfType<FlashlightModel>();
@@ -26,6 +26,7 @@ public class FlashlightController : BaseController<FlashlightModel>
         {
             return;
         }
+
         base.On();
         _model.IsOn = true;
         CancelInvoke("ChargeIncrease");
@@ -42,7 +43,16 @@ public class FlashlightController : BaseController<FlashlightModel>
 
     public void ChargeReduction()
     {
-        // TODO: изменение интенсивности
+        if (_model.TimerCoef <= _model.MinRate)
+        {
+            var time = (_model.TimerCoef % _model.MinRate) * (1 / _model.MinRate);
+            _model.Intensity = _model.IntensityCurve.Evaluate(time);
+        }
+        else
+        {
+            _model.Intensity = 0;
+        }
+
         if (_model.TimerCoef <= 0)
         {
             CancelInvoke("ChargeReduction");
