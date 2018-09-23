@@ -10,15 +10,6 @@ public class FlashlightView : BaseView<FlashlightModel>
     {
         _light = GetComponent<Light>();
         base.Awake();
-        if (_model.IsInited)
-        {
-            InitializeView();
-        }
-        else
-        {
-            _model.OnInit += InitializeView;
-        }
-        
     }
 
     protected override void InitializeView()

@@ -8,7 +8,7 @@ public class FlashlightController : BaseController<FlashlightModel>
 
     protected override void Awake()
     {
-        _model = FindObjectOfType<FlashlightModel>();
+        base.Awake();
         Off();
     }
 
@@ -45,7 +45,7 @@ public class FlashlightController : BaseController<FlashlightModel>
     {
         if (_model.TimerCoef <= _model.MinRate)
         {
-            var time = (_model.TimerCoef % _model.MinRate) * (1 / _model.MinRate);
+            var time = _model.TimerCoef * (1 / _model.MinRate);
             _model.Intensity = _model.IntensityCurve.Evaluate(time);
         }
         else
