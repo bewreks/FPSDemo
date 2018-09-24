@@ -1,12 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace FPSDemo
 {
-//TODO: review MVC for multiple models of one type
 	public class BaseModel : MonoBehaviour
 	{
-		public Action OnInit;
+		public UnityAction OnInit;
 
 		protected bool _isInited;
 

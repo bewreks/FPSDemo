@@ -9,8 +9,19 @@ namespace FPSDemo
         private void Update()
         {
             if (Input.GetButtonDown("SwitchFlashlight"))
-//                Main.Instance.FlashlightControllerGb.Switch();
+            {
                 Main.Instance.FlashlightController.Switch();
+            }
+
+            if (Input.GetButton("Fire1"))
+            {
+                Main.Instance.WeaponController.Fire();
+            }
+
+            if (Input.GetButtonDown("Reload"))
+            {
+                Main.Instance.WeaponController.Reload();
+            }
         }
     }
 }

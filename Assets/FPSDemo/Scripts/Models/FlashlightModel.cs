@@ -1,14 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace FPSDemo
 {
 
     public class FlashlightModel : BaseModel
     {
-        public Action<bool> OnSwitch;
-        public Action<float> OnIntensityChange;
-        public Action<float> OnTimerChange;
+        public UnityAction<bool> OnSwitch;
+        public UnityAction<float> OnIntensityChange;
+        public UnityAction<float> OnTimerChange;
 
         public float MinRate = 0.2f;
         public AnimationCurve IntensityCurve;

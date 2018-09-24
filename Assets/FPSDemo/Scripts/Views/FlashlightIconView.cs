@@ -11,15 +11,10 @@ namespace FPSDemo
 
 		private bool _isOn;
 		private float _coef;
-		
-		protected override void Awake()
+
+		protected override void Initialize()
 		{
 			_image = GetComponent<Image>();
-			base.Awake();
-		}
-
-		protected override void InitializeView()
-		{
 			_model.OnSwitch += OnSwitch;
 			_model.OnTimerChange += OnTimerChange;
 			_coef = _model.TimerCoef;

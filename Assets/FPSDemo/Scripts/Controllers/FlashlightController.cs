@@ -8,9 +8,8 @@ namespace FPSDemo
     {
         private const float Rate = 0.01f;
 
-        protected override void Awake()
+        protected override void Initialize()
         {
-            base.Awake();
             Off();
         }
 
