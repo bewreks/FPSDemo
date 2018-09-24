@@ -22,6 +22,11 @@ namespace FPSDemo
             {
                 Main.Instance.WeaponController.Reload();
             }
+
+            if (Input.GetButtonDown("Cancel"))
+            {
+                Application.Quit();
+            }
         }
     }
 }
