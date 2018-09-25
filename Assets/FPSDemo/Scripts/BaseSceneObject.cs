@@ -5,7 +5,6 @@ using UnityEngine;
 namespace FPSDemo {
 	public abstract class BaseSceneObject : MonoBehaviour
 	{
-		protected AnimationCurve _animationCurve;
 		protected Light _light;
 		protected Rigidbody _rigidbody;
 		protected Material _material;
@@ -14,7 +13,6 @@ namespace FPSDemo {
 		
 		private void Awake()
 		{
-			_animationCurve = GetComponent<AnimationCurve>();
 			_light = GetComponent<Light>();
 			_rigidbody = GetComponent<Rigidbody>();
 			_particleSystem = GetComponent<ParticleSystem>();

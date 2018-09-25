@@ -1,15 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace FPSDemo
 {
+    [Serializable]
+    public struct ReloadTransform
+    {
+        public Vector3 ReloadPosition;
+        public Vector3 ReloadRotation;
+    }
+    
     public class WeaponView : BaseView<WeaponModel>
     {
+        
         public GameObject _firepoint;
+        public ReloadTransform ReloadTransform;
         private Animation _animation;
         private Light _light;
-        
+
+        private Vector3 _rotationStart;
+
         protected override void Initialize()
         {
             _light = _firepoint.GetComponent<Light>();
@@ -22,32 +33,41 @@ namespace FPSDemo
 
         private void OnReload()
         {
-            _animation.Play("StandardReload");
+            StartCoroutine(StartReload("StandardReload"));
         }
 
         private void OnEmptyReload()
         {
-            _animation.Play("ReloadEmpty");
+            StartCoroutine(StartReload("ReloadEmpty"));
         }
 
         private void OnEmptyShoot()
         {
-            _animation.Play("FireEmpty");
-            Shoot();
+            Shoot("FireEmpty");
         }
 
         private void OnShoot()
         {
-            _animation.Play("Fire");
-            Shoot();
+            Shoot("Fire");
         }
 
-        private void Shoot()
+        private void Shoot(string animatioinName)
         {
-            StartCoroutine(HideBlick());
+            _animation.Play(animatioinName);
+            StartCoroutine(ShowReflect());
         }
 
-        private IEnumerator HideBlick()
+        private IEnumerator StartReload(string animatioinName)
+        {
+            transform.Translate(ReloadTransform.ReloadPosition);
+            transform.Rotate(ReloadTransform.ReloadRotation);
+            _animation.Play(animatioinName);
+            yield return WaitForAnimation(_animation);
+            transform.Rotate(-ReloadTransform.ReloadRotation);
+            transform.Translate(-ReloadTransform.ReloadPosition);
+        }
+
+        private IEnumerator ShowReflect()
         {
             yield return new WaitForSeconds(0.1f);
             _light.enabled = true;

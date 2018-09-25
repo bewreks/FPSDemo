@@ -6,14 +6,15 @@ namespace FPSDemo
 {
     public class Torch : BaseSceneObject
     {
+        public AnimationCurve IntenseCurve;
+
         protected override void OnAwake()
         {
-            
         }
 
         private void FixedUpdate()
         {
-            _light.intensity = 1 + _animationCurve.Evaluate(Time.time);
+            _light.intensity = 1 + IntenseCurve.Evaluate(Time.time);
         }
 
         public void LightningOff()
