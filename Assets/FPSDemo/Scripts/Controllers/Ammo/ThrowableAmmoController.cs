@@ -9,7 +9,7 @@ namespace FPSDemo {
 		
 		protected override void OnFire()
 		{
-			_rigidbody.AddForce(transform.forward, ForceMode.Impulse);
+			_rigidbody.AddForce(transform.forward * _model.Speed, ForceMode.Impulse);
 			StartCoroutine(Fuse());
 		}
 
