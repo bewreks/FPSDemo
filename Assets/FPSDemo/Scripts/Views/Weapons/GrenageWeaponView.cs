@@ -10,12 +10,17 @@ namespace FPSDemo
         protected override void OnInitialize()
         {
             _model.OnShoot += OnShoot;
+            _model.OnShootAfterPrepare += OnShootAfterPrepare;
+        }
+
+        private void OnShootAfterPrepare()
+        {
+            _animation.Play("Idle01");
         }
 
         private void OnShoot()
         {
             _animation.Play("Throw");
-            
         }
     }
 }

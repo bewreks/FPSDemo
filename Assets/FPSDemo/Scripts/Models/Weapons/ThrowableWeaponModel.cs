@@ -6,6 +6,5 @@ namespace FPSDemo
 {
     public class ThrowableWeaponModel : BaseWeaponModel
     {
-        public float preparation;
     }
 }

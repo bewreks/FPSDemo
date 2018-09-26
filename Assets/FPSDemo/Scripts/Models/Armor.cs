@@ -14,7 +14,7 @@ namespace FPSDemo
         
         public float CurrentArmor
         {
-            get { return BaseArmor - _armor; }
+            get { return BaseArmor + _armor; }
             set
             {
                 _armor = value;

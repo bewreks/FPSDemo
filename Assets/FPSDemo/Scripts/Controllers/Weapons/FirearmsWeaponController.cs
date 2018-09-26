@@ -34,5 +34,10 @@ namespace FPSDemo
                 _model.OnShoot?.Invoke();
             }
         }
+
+        protected override void OnShootAfterPrepare()
+        {
+            
+        }
     }
 }

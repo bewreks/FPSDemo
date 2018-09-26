@@ -37,10 +37,18 @@ namespace FPSDemo
             {
                 return;
             }
-            
+
             _model.BulletsCountCurrent--;
             _model.LastShootTime = Time.time;
             OnShoot();
+
+            StartCoroutine(Shoot());
+        }
+
+        private IEnumerator Shoot()
+        {
+            yield return new WaitForSeconds(_model.Preparation);
+            OnShootAfterPrepare();
 
             var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, _firepoint.rotation);
             ammo.GetComponent<IFire>().Fire(_model.Power);
@@ -49,5 +57,6 @@ namespace FPSDemo
         public abstract void Reload();
         protected abstract bool CantFire();
         protected abstract void OnShoot();
+        protected abstract void OnShootAfterPrepare();
     }
 }
