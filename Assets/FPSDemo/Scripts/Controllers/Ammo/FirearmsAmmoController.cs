@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-    public class AmmoController : BaseController<AmmoModel>
+    public class FirearmsAmmoController : BaseAmmoController<FirearmsAmmoModel>
     {
-        protected override void Initialize()
+        protected override void OnFire()
         {
-            _model.Speed = 0;
+            
         }
 
-        public void Fire(float force)
+        protected override void OnInit()
         {
-            _model.Speed = force;
+            
         }
 
         private void FixedUpdate()
@@ -30,9 +30,8 @@ namespace FPSDemo
                 _model.IsHitted = true;
                 transform.position = hit.point;
 
-                /*IDamageable d = hit.collider.GetComponent<IDamageable>();
-                if (d != null)
-                    d.ApplyDamage(_damage);*/
+                var d = hit.collider.GetComponent<IDamagable>();
+                d?.DoDamage(_model.Damage);
 
                 Destroy(gameObject, 0.3f);
             }

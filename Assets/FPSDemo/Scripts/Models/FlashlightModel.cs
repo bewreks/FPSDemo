@@ -20,12 +20,11 @@ namespace FPSDemo
         private float _intensity;
         private float _timer;
 
-        protected void Awake()
+        protected override void OnAwake()
         {
             _isOn = false;
             _intensity = _baseIntensity;
             _timer = 0;
-            base.Awake();
         }
 
         public bool IsOn

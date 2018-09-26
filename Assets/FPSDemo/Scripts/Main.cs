@@ -10,7 +10,8 @@ namespace FPSDemo
 
         public InputController InputController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
-        public WeaponController WeaponController;
+        public FirearmsWeaponController FirearmsWeaponController;
+        public ThrowableWeaponController ThrowableWeaponController;
 
         private void Awake()
         {

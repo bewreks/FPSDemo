@@ -10,6 +10,14 @@ namespace FPSDemo {
 		protected Material _material;
 		protected Renderer _renderer;
 		protected ParticleSystem _particleSystem;
+		protected Collider _collider;
+
+		public Light Light => _light;
+		public Rigidbody Rigidbody => _rigidbody;
+		public Material Material => _material;
+		public Renderer Renderer => _renderer;
+		public ParticleSystem ParticleSystem => _particleSystem;
+		public Collider Collider => _collider;
 		
 		private void Awake()
 		{
@@ -21,6 +29,8 @@ namespace FPSDemo {
 			{
 				_material = _renderer.material;
 			}
+
+			_collider = GetComponent<Collider>();
 
 			OnAwake();
 		}

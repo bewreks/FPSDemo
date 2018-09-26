@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace FPSDemo {
-	public class AmmoModel : BaseModel
+	public class BaseAmmoModel : BaseModel
 	{
 		public float Damage;
-		public float DestroyTime;
+		public float Speed;
 
 		public LayerMask Mask;
-		public float Speed;
 
 		public bool IsHitted;
 

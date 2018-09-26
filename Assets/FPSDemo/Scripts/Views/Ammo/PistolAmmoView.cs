@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-    public class PistolAmmoView : BaseView<AmmoModel>
+    public class PistolAmmoView : BaseView<FirearmsAmmoModel>
     {
         protected override void Initialize()
         {

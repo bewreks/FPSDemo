@@ -15,12 +15,22 @@ namespace FPSDemo
 
             if (Input.GetButton("Fire1"))
             {
-                Main.Instance.WeaponController.Fire();
+                if (Main.Instance.FirearmsWeaponController.gameObject.activeInHierarchy)
+                {
+                    Main.Instance.FirearmsWeaponController.Fire();
+                }
+                if (Main.Instance.ThrowableWeaponController.gameObject.activeInHierarchy)
+                {
+                    Main.Instance.ThrowableWeaponController.Fire();
+                }
             }
 
             if (Input.GetButtonDown("Reload"))
             {
-                Main.Instance.WeaponController.Reload();
+                if (Main.Instance.FirearmsWeaponController.gameObject.activeInHierarchy)
+                {
+                    Main.Instance.FirearmsWeaponController.Reload();
+                }
             }
 
             if (Input.GetButtonDown("Cancel"))

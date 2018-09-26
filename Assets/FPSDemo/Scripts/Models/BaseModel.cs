@@ -14,7 +14,13 @@ namespace FPSDemo
 		protected void Awake()
 		{
 			_isInited = true;
+			OnAwake();
 			OnInit?.Invoke();
+		}
+
+		protected virtual void OnAwake()
+		{
+			
 		}
 	}
 }
