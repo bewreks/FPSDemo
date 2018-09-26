@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-    public abstract class BaseWeaponController<M> : BaseController<M> where M : BaseWeaponModel
+    public abstract class BaseWeaponController<M> : BaseController<M>, IWeapon where M : BaseWeaponModel
     {
         private Transform _firepoint;
         
@@ -53,6 +53,13 @@ namespace FPSDemo
             var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, _firepoint.rotation);
             ammo.GetComponent<IFire>().Fire(_model.Power);
         }
+
+        public bool IsActive()
+        {
+            return gameObject.activeInHierarchy;
+        }
+
+        public GameObject GameObject => gameObject;
 
         public abstract void Reload();
         protected abstract bool CantFire();

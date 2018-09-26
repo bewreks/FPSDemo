@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FPSDemo
 {
@@ -15,27 +13,34 @@ namespace FPSDemo
 
             if (Input.GetButton("Fire1"))
             {
-                if (Main.Instance.FirearmsWeaponController.gameObject.activeInHierarchy)
+                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.FirearmsWeaponController.Fire();
-                }
-                if (Main.Instance.ThrowableWeaponController.gameObject.activeInHierarchy)
-                {
-                    Main.Instance.ThrowableWeaponController.Fire();
+                    Main.Instance.PlayerController.CurrentWeapon.Fire();
                 }
             }
 
             if (Input.GetButtonDown("Reload"))
             {
-                if (Main.Instance.FirearmsWeaponController.gameObject.activeInHierarchy)
+                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.FirearmsWeaponController.Reload();
+                    Main.Instance.PlayerController.CurrentWeapon.Reload();
                 }
             }
 
             if (Input.GetButtonDown("Cancel"))
             {
                 Application.Quit();
+            }
+
+            var axis = Input.GetAxis("Mouse ScrollWheel");
+            Debug.Log(axis);
+            if (axis > 0)
+            {
+                Main.Instance.PlayerController.SwitchWeapon(true);
+            }
+            else if (axis < 0)
+            {
+                Main.Instance.PlayerController.SwitchWeapon(false);
             }
         }
     }
