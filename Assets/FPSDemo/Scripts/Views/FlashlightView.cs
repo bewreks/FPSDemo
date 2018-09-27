@@ -8,14 +8,9 @@ namespace FPSDemo
     {
         protected Light _light;
 
-        protected override void Awake()
+        protected override void Initialize()
         {
             _light = GetComponent<Light>();
-            base.Awake();
-        }
-
-        protected override void InitializeView()
-        {
             _model.OnSwitch += OnSwitch;
             _model.OnIntensityChange += OnIntensityChange;
             OnIntensityChange(_model.Intensity);

@@ -9,8 +9,8 @@ namespace FPSDemo
         public static Main Instance { get; private set; }
 
         public InputController InputController { get; private set; }
-        public FlashlightControllerGB FlashlightControllerGb { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
+        public PlayerController PlayerController { get; private set; }
 
         private void Awake()
         {
@@ -23,8 +23,8 @@ namespace FPSDemo
         private void Start()
         {
             InputController = gameObject.AddComponent<InputController>();
-            FlashlightControllerGb = gameObject.AddComponent<FlashlightControllerGB>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
+            PlayerController = GameObject.FindObjectOfType<PlayerController>();
         }
     }
 }

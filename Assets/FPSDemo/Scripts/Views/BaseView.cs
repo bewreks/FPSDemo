@@ -4,23 +4,14 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-	public abstract class BaseView<M> : MonoBehaviour where M : BaseModel
+	public abstract class BaseView<M> : BaseModelContainer<M> where M : BaseModel
 	{
-		protected M _model;
-
-		protected virtual void Awake()
+		protected IEnumerator WaitForAnimation ( Animation animation )
 		{
-			_model = FindObjectOfType<M>();
-			if (_model.IsInited)
+			do
 			{
-				InitializeView();
-			}
-			else
-			{
-				_model.OnInit += InitializeView;
-			}
+				yield return null;
+			} while ( animation.isPlaying );
 		}
-
-		protected abstract void InitializeView();
 	}
 }

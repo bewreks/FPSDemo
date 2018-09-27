@@ -1,14 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace FPSDemo
 {
 
     public class FlashlightModel : BaseModel
     {
-        public Action<bool> OnSwitch;
-        public Action<float> OnIntensityChange;
-        public Action<float> OnTimerChange;
+        public UnityAction<bool> OnSwitch;
+        public UnityAction<float> OnIntensityChange;
+        public UnityAction<float> OnTimerChange;
 
         public float MinRate = 0.2f;
         public AnimationCurve IntensityCurve;
@@ -20,12 +20,11 @@ namespace FPSDemo
         private float _intensity;
         private float _timer;
 
-        protected void Awake()
+        protected override void OnAwake()
         {
             _isOn = false;
             _intensity = _baseIntensity;
             _timer = 0;
-            base.Awake();
         }
 
         public bool IsOn
