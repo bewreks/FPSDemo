@@ -9,6 +9,14 @@ namespace FPSDemo {
 			
 		}
 
+		public override void TakeAim()
+		{
+		}
+
+		public override void RealizeAim()
+		{
+		}
+
 		protected override bool CantFire()
 		{
 			return false;

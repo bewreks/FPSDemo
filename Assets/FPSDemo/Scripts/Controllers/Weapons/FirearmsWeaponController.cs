@@ -18,6 +18,16 @@ namespace FPSDemo
             _model.StartReloadTime = Time.time;
         }
 
+        public override void TakeAim()
+        {
+            _model.IsAim = true;
+        }
+
+        public override void RealizeAim()
+        {
+            _model.IsAim = false;
+        }
+
         protected override bool CantFire()
         {
             return _model.IsReloading;

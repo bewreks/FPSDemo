@@ -18,6 +18,20 @@ namespace FPSDemo
                     Main.Instance.PlayerController.CurrentWeapon.Fire();
                 }
             }
+            if (Input.GetButtonDown("Fire2"))
+            {
+                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                {
+                    Main.Instance.PlayerController.CurrentWeapon.TakeAim();
+                }
+            }
+            if (Input.GetButtonUp("Fire2"))
+            {
+                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                {
+                    Main.Instance.PlayerController.CurrentWeapon.RealizeAim();
+                }
+            }
 
             if (Input.GetButtonDown("Reload"))
             {
@@ -33,7 +47,6 @@ namespace FPSDemo
             }
 
             var axis = Input.GetAxis("Mouse ScrollWheel");
-            Debug.Log(axis);
             if (axis > 0)
             {
                 Main.Instance.PlayerController.SwitchWeapon(true);

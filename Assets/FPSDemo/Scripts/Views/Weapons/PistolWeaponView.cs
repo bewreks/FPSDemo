@@ -9,6 +9,7 @@ namespace FPSDemo
     {
         public Vector3 ReloadPosition;
         public Vector3 ReloadRotation;
+        public Vector3 AimPosition;
     }
     
     public class PistolWeaponView : BaseWeaponView<FirearmsWeaponModel>
@@ -25,6 +26,18 @@ namespace FPSDemo
             _model.OnShoot += OnShoot;
             _model.OnEmptyShoot += OnEmptyShoot;
             _model.OnReload += OnReload;
+            _model.OnTakeAim += OnTakeAim;
+            _model.OnRealizeAim += OnRealizeAim;
+        }
+
+        private void OnRealizeAim()
+        {
+            transform.Translate(-ReloadTransform.AimPosition);
+        }
+
+        private void OnTakeAim()
+        {
+            transform.Translate(ReloadTransform.AimPosition);
         }
 
         private void OnReload()
@@ -50,12 +63,24 @@ namespace FPSDemo
 
         private IEnumerator StartReload(string animatioinName)
         {
+            _model.OnTakeAim -= OnTakeAim;
+            _model.OnRealizeAim -= OnRealizeAim;
+            if (_model.IsAim)
+            {
+                OnRealizeAim();
+            }
             transform.Translate(ReloadTransform.ReloadPosition);
             transform.Rotate(ReloadTransform.ReloadRotation);
             _animation.Play(animatioinName);
             yield return WaitForAnimation(_animation);
             transform.Rotate(-ReloadTransform.ReloadRotation);
             transform.Translate(-ReloadTransform.ReloadPosition);
+            _model.OnTakeAim += OnTakeAim;
+            _model.OnRealizeAim += OnRealizeAim;
+            if (_model.IsAim)
+            {
+                OnTakeAim();
+            }
         }
 
         private IEnumerator ShowReflect()

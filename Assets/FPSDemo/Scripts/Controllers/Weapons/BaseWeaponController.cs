@@ -62,6 +62,8 @@ namespace FPSDemo
         public GameObject GameObject => gameObject;
 
         public abstract void Reload();
+        public abstract void TakeAim();
+        public abstract void RealizeAim();
         protected abstract bool CantFire();
         protected abstract void OnShoot();
         protected abstract void OnShootAfterPrepare();
