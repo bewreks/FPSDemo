@@ -15,6 +15,8 @@ ModelImporter:
     100018: StairsMesh
     100020: MainHallFloor
     100022: StairsWalls
+    100024: BasementDoor
+    100026: MainHallWalls
     400000: //RootNode
     400002: Camera
     400004: Lamp
@@ -27,6 +29,8 @@ ModelImporter:
     400018: StairsMesh
     400020: MainHallFloor
     400022: StairsWalls
+    400024: BasementDoor
+    400026: MainHallWalls
     2000000: Camera
     2100000: No Name
     2300000: Plane
@@ -38,6 +42,8 @@ ModelImporter:
     2300012: StairsMesh
     2300014: MainHallFloor
     2300016: StairsWalls
+    2300018: BasementDoor
+    2300020: MainHallWalls
     3300000: Plane
     3300002: BasemantWalls
     3300004: BasementFloor
@@ -47,6 +53,8 @@ ModelImporter:
     3300012: StairsMesh
     3300014: MainHallFloor
     3300016: StairsWalls
+    3300018: BasementDoor
+    3300020: MainHallWalls
     4300000: Plane
     4300002: BasementFloor
     4300004: BasemantWalls
@@ -56,6 +64,8 @@ ModelImporter:
     4300012: StairsMesh
     4300014: MainHallFloor
     4300016: StairsWalls
+    4300018: BasementDoor
+    4300020: MainHallWalls
     10800000: Lamp
   externalObjects: {}
   materials:

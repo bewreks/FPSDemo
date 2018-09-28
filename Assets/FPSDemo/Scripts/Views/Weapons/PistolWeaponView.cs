@@ -9,19 +9,28 @@ namespace FPSDemo
     {
         public Vector3 ReloadPosition;
         public Vector3 ReloadRotation;
+    }
+
+    [Serializable]
+    public struct AimTransform
+    {
         public Vector3 AimPosition;
+        public float FieldOfView;
+        public float OldFieldOfView;
     }
     
     public class PistolWeaponView : BaseWeaponView<FirearmsWeaponModel>
     {
         
         public ReloadTransform ReloadTransform;
+        public AimTransform AimTransform;
         private Light _light;
 
         private Vector3 _rotationStart;
 
         protected override void OnInitialize()
         {
+            AimTransform.OldFieldOfView = Camera.main.fieldOfView;
             _light = _firepoint.GetComponent<Light>();
             _model.OnShoot += OnShoot;
             _model.OnEmptyShoot += OnEmptyShoot;
@@ -32,12 +41,14 @@ namespace FPSDemo
 
         private void OnRealizeAim()
         {
-            transform.Translate(-ReloadTransform.AimPosition);
+            transform.Translate(-AimTransform.AimPosition);
+            Camera.main.fieldOfView = AimTransform.OldFieldOfView;
         }
 
         private void OnTakeAim()
         {
-            transform.Translate(ReloadTransform.AimPosition);
+            transform.Translate(AimTransform.AimPosition);
+            Camera.main.fieldOfView = AimTransform.FieldOfView;
         }
 
         private void OnReload()
