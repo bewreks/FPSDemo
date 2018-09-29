@@ -28,7 +28,6 @@ namespace FPSDemo
         protected override void OnAwake()
         {
             NavAgent = GetComponent<NavMeshAgent>();
-//            Target = Main.Instance.PlayerController.gameObject;
         }
     }
 }

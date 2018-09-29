@@ -55,6 +55,16 @@ namespace FPSDemo
             {
                 Main.Instance.PlayerController.SwitchWeapon(false);
             }
+
+            if (Input.GetButtonDown("M8NextPosition"))
+            {
+                Main.Instance.TeammateController.NextPosition();
+            }
+
+            if (Input.GetButtonDown("CallM8"))
+            {
+                Main.Instance.TeammateController.Call();
+            }
         }
     }
 }

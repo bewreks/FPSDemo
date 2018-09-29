@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FPSDemo
 {
@@ -9,6 +7,24 @@ namespace FPSDemo
         protected override void Initialize()
         {
             
+        }
+
+        public void NextPosition()
+        {
+            RaycastHit hit;
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                _model.TargetPostion = hit.point;
+            }
+            _model.ToPosition = true;
+        }
+
+        public void Call()
+        {
+            _model.Target = Main.Instance.PlayerController.gameObject;
+            _model.ToPosition = false;
         }
     }
 }
