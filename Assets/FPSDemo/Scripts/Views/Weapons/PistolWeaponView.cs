@@ -100,6 +100,6 @@ namespace FPSDemo
             _light.enabled = true;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             _light.enabled = false;
-        }
+        } 
     }
 }

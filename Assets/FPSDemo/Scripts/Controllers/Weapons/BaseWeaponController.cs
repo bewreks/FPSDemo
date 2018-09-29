@@ -7,6 +7,8 @@ namespace FPSDemo
     public abstract class BaseWeaponController<M> : BaseController<M>, IWeapon where M : BaseWeaponModel
     {
         private Transform _firepoint;
+
+        public GameObject GameObject => gameObject;
         
         protected override void Initialize()
         {
@@ -50,7 +52,14 @@ namespace FPSDemo
             yield return new WaitForSeconds(_model.Preparation);
             OnShootAfterPrepare();
 
-            var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, _firepoint.rotation);
+            Vector3 hitPoint = CheckHitPoint(_firepoint.position);
+            var ammoRotation = _firepoint.rotation;
+            if (hitPoint != _firepoint.position)
+            {
+                var forward = hitPoint - _firepoint.position;
+                ammoRotation = Quaternion.LookRotation(forward);
+            }
+            var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, ammoRotation);
             ammo.GetComponent<IFire>().Fire(_model.Power);
         }
 
@@ -59,7 +68,11 @@ namespace FPSDemo
             return gameObject.activeInHierarchy;
         }
 
-        public GameObject GameObject => gameObject;
+        protected virtual Vector3 CheckHitPoint(Vector3 hitPoint)
+        {
+            return hitPoint;
+        }
+
 
         public abstract void Reload();
         public abstract void TakeAim();
