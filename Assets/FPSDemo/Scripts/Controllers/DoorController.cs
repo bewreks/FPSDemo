@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace FPSDemo
 {
+    // Когда указываешь напарнику точку коллайдера
+    // Тогда одновременно срабатывают вход и выход из триггера
     public class DoorController : BaseController<DoorModel>
     {
         private int _counter;
