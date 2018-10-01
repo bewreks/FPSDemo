@@ -6,6 +6,7 @@ namespace FPSDemo
 {
     public class FirearmsWeaponController : BaseWeaponController<FirearmsWeaponModel>
     {
+
         public override void Reload()
         {
             if (_model.IsFull)
@@ -35,6 +36,8 @@ namespace FPSDemo
 
         protected override void OnShoot()
         {
+            
+            
             if (_model.BulletsCountCurrent == 0)
             {
                 _model.OnEmptyShoot?.Invoke();
@@ -43,6 +46,18 @@ namespace FPSDemo
             {
                 _model.OnShoot?.Invoke();
             }
+        }
+
+        protected override Vector3 CheckHitPoint(Vector3 hitPoint)
+        {
+            RaycastHit hit;
+            var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2.0f, Screen.height / 2.0f, 0));
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                return hit.point;
+            }
+            return base.CheckHitPoint(hitPoint);
         }
 
         protected override void OnShootAfterPrepare()
