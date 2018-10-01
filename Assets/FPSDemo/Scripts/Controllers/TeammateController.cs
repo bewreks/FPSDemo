@@ -23,7 +23,7 @@ namespace FPSDemo
 
         public void Call()
         {
-            _model.Target = Main.Instance.PlayerController.gameObject;
+            _model.Target = Main.Instance.WeaponsController.gameObject;
             _model.ToPosition = false;
         }
     }

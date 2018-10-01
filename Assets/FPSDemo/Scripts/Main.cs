@@ -10,8 +10,9 @@ namespace FPSDemo
 
         public InputController InputController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
-        public PlayerController PlayerController { get; private set; }
+        public WeaponsController WeaponsController { get; private set; }
         public TeammateController TeammateController { get; private set; }
+        public PlayerController PlayerController { get; private set; }
 
         private void Awake()
         {
@@ -25,8 +26,9 @@ namespace FPSDemo
         {
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
-            PlayerController = GameObject.FindObjectOfType<PlayerController>();
-            TeammateController = GameObject.FindObjectOfType<TeammateController>();
+            WeaponsController = FindObjectOfType<WeaponsController>();
+            TeammateController = FindObjectOfType<TeammateController>();
+            PlayerController = FindObjectOfType<PlayerController>();
         }
     }
 }
