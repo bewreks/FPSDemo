@@ -1,17 +1,23 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace FPSDemo
 {
+    [RequireComponent(typeof(WaypointsController))]
     public class EnemyController : BaseController<EnemyModel>, IDamagable
     {
-        private bool can;
+        private WaypointsController _waypointsController;
         
         protected override void Initialize()
         {
+            _waypointsController = GetComponent<WaypointsController>();
+            
             _model.NavAgent = GetComponent<NavMeshAgent>();
-            can = true;
+            _model.IsAttacking = false;
+            
+            
         }
 
         public void DoDamage(float damage)
@@ -34,17 +40,64 @@ namespace FPSDemo
 
         public void Attack()
         {
-            if (can)
+            if (!_model.IsAttacking)
             {
                 _model.OnAttack?.Invoke();
-                can = false;
-                Invoke("ResetCan", 0.5f);
+                _model.IsAttacking = true;
+                Invoke("OnAttackEnd", _model.AttackTime);
             }
         }
 
-        public void ResetCan()
+        public void OnAttackEnd()
         {
-            can = true;
+            _model.IsAttacking = false;
+        }
+
+        private void Update()
+        {
+            switch (_model.Behaviour)
+            {
+                case EnemyBehaviour.RANDOM_PATROL:
+                    if (!_model.NavAgent.hasPath || _model.NavAgent.remainingDistance <= _model.NavAgent.stoppingDistance)
+                    {
+                        Move(GetRandomPoint());
+                    }
+                    break;
+                case EnemyBehaviour.PATROL:
+                    if (!_model.NavAgent.hasPath || _model.NavAgent.remainingDistance <= _model.NavAgent.stoppingDistance)
+                    {
+                        _waypointsController.Next();
+                        Move(_waypointsController.Waypoint.transform.position);
+                    }
+                    break;
+                case EnemyBehaviour.TRACKING:
+                    Move(transform.position);
+                    if (_model.TrackingObject)
+                    {
+                        _model.OnTurn?.Invoke(_model.TrackingObject.position);
+                    }
+                    break;
+                case EnemyBehaviour.CHASING:
+                    if (_model.TrackingObject)
+                    {
+                        Move(_model.TrackingObject.position);
+                    }
+                    break;
+                case EnemyBehaviour.STAY:
+                    Move(transform.position);
+                    break;
+                    
+            }
+        }
+
+        private Vector3 GetRandomPoint()
+        {
+            return Random.insideUnitSphere * _model.MaxRandomSphereSize;
+        }
+
+        public void TrackingTarget(Transform trackingObject)
+        {
+            _model.TrackingObject = trackingObject;
         }
     }
 }
