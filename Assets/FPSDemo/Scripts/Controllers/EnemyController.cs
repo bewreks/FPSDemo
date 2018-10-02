@@ -16,8 +16,6 @@ namespace FPSDemo
             
             _model.NavAgent = GetComponent<NavMeshAgent>();
             _model.IsAttacking = false;
-            
-            
         }
 
         public void DoDamage(float damage)
@@ -34,7 +32,10 @@ namespace FPSDemo
             NavMeshHit hit;
             if (NavMesh.SamplePosition(position, out hit, 50f, -1))
             {
-                _model.NavAgent.SetDestination(hit.position);
+                if (_model.NavAgent)
+                {
+                    _model.NavAgent.SetDestination(hit.position);
+                }
             }
         }
 

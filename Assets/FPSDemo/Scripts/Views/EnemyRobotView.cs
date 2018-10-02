@@ -16,7 +16,10 @@ namespace FPSDemo {
 
 		private void OnAttack()
 		{
-			_animator.SetTrigger("Attack");
+			if (_animator)
+			{
+				_animator.SetTrigger("Attack");
+			}
 		}
 
 		private void Update()
@@ -26,7 +29,11 @@ namespace FPSDemo {
 			{
 				velocity = _model.NavAgent.desiredVelocity;
 			}
-			_animator.SetFloat("Speed", velocity.magnitude);
+
+			if (_animator)
+			{
+				_animator.SetFloat("Speed", velocity.magnitude);
+			}
 		}
 	}
 }

@@ -24,6 +24,8 @@ namespace FPSDemo
 
         private void Start()
         {
+            Cursor.visible = false;
+            
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
             WeaponsController = FindObjectOfType<WeaponsController>();
