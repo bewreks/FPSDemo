@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace FPSDemo
@@ -6,7 +7,10 @@ namespace FPSDemo
     public class EnemyModel : BaseModel
     {
         public UnityAction OnHpChanged;
-        
+        public UnityAction OnAttack;
+
+        public NavMeshAgent NavAgent;
+
         public float BaseHp = 100;
         [SerializeField]public Armor Armor = new Armor{ArmorType = 1, BaseArmor = 0};
 
