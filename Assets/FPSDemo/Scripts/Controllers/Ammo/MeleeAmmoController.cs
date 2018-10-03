@@ -21,7 +21,7 @@ namespace FPSDemo
         private void OnTriggerEnter(Collider other)
         {
             var component = other.GetComponent<IDamagable>();
-            component?.DoDamage(_model.Damage);
+            component?.DoDamage(_model.Damage, _model.Owner);
         }
 
         private void Remove()

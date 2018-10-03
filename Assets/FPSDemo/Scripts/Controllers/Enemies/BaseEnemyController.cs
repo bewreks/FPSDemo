@@ -13,9 +13,14 @@ namespace FPSDemo
             _model.IsAttacking = false;
         }
 
-        public void DoDamage(float damage)
+        public void DoDamage(float damage, GameObject owner)
         {
             if (_model.IsDead)
+            {
+                return;
+            }
+            // Пока боты не могут навредить себе в любом случае
+            if (owner == gameObject)
             {
                 return;
             }

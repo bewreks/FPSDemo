@@ -12,9 +12,10 @@ namespace FPSDemo
             OnInit();
         }
         
-        public void Fire(float force)
+        public void Fire(float force, GameObject owner)
         {
             _model.Speed = force;
+            _model.Owner = owner;
             OnFire();
         }
 

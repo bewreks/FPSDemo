@@ -9,6 +9,7 @@ namespace FPSDemo
         public UnityAction OnShootAfterPrepare;
         
         public GameObject AmmoPrefab;
+        public GameObject Owner;
         
         public float Power;
         public float Timeout;

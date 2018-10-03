@@ -6,6 +6,6 @@ namespace FPSDemo
 {
     public interface IDamagable
     {
-        void DoDamage(float damage);
+        void DoDamage(float damage, GameObject owner);
     }
 }

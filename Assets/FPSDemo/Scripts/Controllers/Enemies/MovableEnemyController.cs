@@ -16,6 +16,8 @@ namespace FPSDemo
         {
             _waypointsController = GetComponent<WaypointsController>();
             _meleeWeaponController = GetComponentInChildren<MeleeWeaponController>();
+            if (_meleeWeaponController)
+                _meleeWeaponController.SetOwner(gameObject);
 
             _model.NavAgent = GetComponent<NavMeshAgent>();
             base.Initialize();

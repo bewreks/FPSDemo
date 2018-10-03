@@ -20,6 +20,7 @@ namespace FPSDemo
                 {
                     _model.Weapons.Add(child.transform.GetComponent<IWeapon>());
                     _model.Weapons[_model.WeaponsCount].GameObject.SetActive(_model.WeaponsCount == _model.CurrentWeapon);
+                    _model.Weapons[_model.WeaponsCount].SetOwner(gameObject);
                 }
             }
         }

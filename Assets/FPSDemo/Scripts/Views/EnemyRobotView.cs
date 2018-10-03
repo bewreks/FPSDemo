@@ -11,6 +11,16 @@ namespace FPSDemo {
 			_model.OnAttack += OnAttack;
 			_model.OnSpeedChanged += OnSpeedChanged;
 			_model.OnTurn += transform.LookAt;
+			_model.OnHpChanged += OnHpChanged;
+		}
+
+		private void OnHpChanged()
+		{
+			if (_model.IsDead)
+			{
+				_animator.SetFloat("Speed", 0);
+				_animator.SetBool("IsDead", true);
+			}
 		}
 
 		private void OnSpeedChanged(float speed)
