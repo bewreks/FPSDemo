@@ -1,16 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace FPSDemo
 {
     public abstract class BaseEnemyController : BaseController<EnemyModel>, IDamagable
     {
+        public UnityAction OnInit;
         private Transform _previousTarget;
-        
+        private EnemyBehaviour _previousBehaviour;
+        public bool IsInited
+        {
+            get { return _model && _model.IsInited; }
+        }
+
+
         protected override void Initialize()
         {
             _model.IsAttacking = false;
+            OnInit?.Invoke();
         }
 
         public void DoDamage(float damage, GameObject owner)
@@ -39,6 +48,17 @@ namespace FPSDemo
                 _model.IsAttacking = true;
                 Invoke("OnAttackEnd", _model.AttackTime);
             }
+        }
+
+        public void SetNewBehaviour(EnemyBehaviour behaviour)
+        {
+            _previousBehaviour = _model.Behaviour;
+            _model.Behaviour = behaviour;
+        }
+
+        public void SetPreviousBehaviour()
+        {
+            SetNewBehaviour(_previousBehaviour);
         }
 
         public void SetNewTarget(Transform target)
