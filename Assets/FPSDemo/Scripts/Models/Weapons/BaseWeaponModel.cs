@@ -18,7 +18,7 @@ namespace FPSDemo
         public int BulletsCountCurrent;
         
         public bool IsTimeout => Time.time < LastShootTime + Timeout;
-        public bool IsEmpty => BulletsCountCurrent <= 0;
+        public virtual bool IsEmpty => BulletsCountCurrent <= 0;
         
     }
 }

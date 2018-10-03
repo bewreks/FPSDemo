@@ -17,6 +17,7 @@ namespace FPSDemo
     {
         public UnityAction OnHpChanged;
         public UnityAction OnAttack;
+        public UnityAction<float> OnSpeedChanged;
         public UnityAction<Vector3> OnTurn;
 
         public NavMeshAgent NavAgent;

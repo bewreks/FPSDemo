@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FPSDemo {
 	public class EnemyRobotView : BaseView<EnemyModel>
@@ -11,7 +9,13 @@ namespace FPSDemo {
 		{
 			_animator = GetComponent<Animator>();
 			_model.OnAttack += OnAttack;
+			_model.OnSpeedChanged += OnSpeedChanged;
 			_model.OnTurn += transform.LookAt;
+		}
+
+		private void OnSpeedChanged(float speed)
+		{
+			_animator.SetFloat("Speed", speed);
 		}
 
 		private void OnAttack()
@@ -19,20 +23,6 @@ namespace FPSDemo {
 			if (_animator)
 			{
 				_animator.SetTrigger("Attack");
-			}
-		}
-
-		private void Update()
-		{
-			var velocity = Vector3.zero;
-			if (_model.NavAgent.remainingDistance > _model.NavAgent.stoppingDistance)
-			{
-				velocity = _model.NavAgent.desiredVelocity;
-			}
-
-			if (_animator)
-			{
-				_animator.SetFloat("Speed", velocity.magnitude);
 			}
 		}
 	}

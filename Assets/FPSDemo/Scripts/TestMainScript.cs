@@ -7,12 +7,7 @@ namespace FPSDemo
     public class TestMainScript : MonoBehaviour
     {
         public Camera Camera;
-        public EnemyController enemy;
-        
-        private void Start()
-        {
-            enemy = FindObjectOfType<EnemyController>();
-        }
+        public MovableEnemyController MovableEnemy;
 
         private void Update()
         {
@@ -23,13 +18,13 @@ namespace FPSDemo
                 if (Physics.Raycast(screenPointToRay, out hit))
                 {
                     //enemy.Move(hit.point);
-                    enemy.TrackingTarget(hit.collider.gameObject.transform);
+                    MovableEnemy.SetNewTarget(hit.collider.gameObject.transform);
                 }
             }
 
             if (Input.GetButton("Fire2"))
             {
-                enemy.Attack();
+                MovableEnemy.Attack();
             }
         }
     }
