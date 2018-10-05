@@ -13,31 +13,31 @@ namespace FPSDemo
 
             if (Input.GetButton("Fire1"))
             {
-                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                if (Main.Instance.WeaponsController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.PlayerController.CurrentWeapon.Fire();
+                    Main.Instance.WeaponsController.CurrentWeapon.Fire();
                 }
             }
             if (Input.GetButtonDown("Fire2"))
             {
-                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                if (Main.Instance.WeaponsController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.PlayerController.CurrentWeapon.TakeAim();
+                    Main.Instance.WeaponsController.CurrentWeapon.TakeAim();
                 }
             }
             if (Input.GetButtonUp("Fire2"))
             {
-                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                if (Main.Instance.WeaponsController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.PlayerController.CurrentWeapon.RealizeAim();
+                    Main.Instance.WeaponsController.CurrentWeapon.RealizeAim();
                 }
             }
 
             if (Input.GetButtonDown("Reload"))
             {
-                if (Main.Instance.PlayerController.CurrentWeapon.IsActive())
+                if (Main.Instance.WeaponsController.CurrentWeapon.IsActive())
                 {
-                    Main.Instance.PlayerController.CurrentWeapon.Reload();
+                    Main.Instance.WeaponsController.CurrentWeapon.Reload();
                 }
             }
 
@@ -49,12 +49,19 @@ namespace FPSDemo
             var axis = Input.GetAxis("Mouse ScrollWheel");
             if (axis > 0)
             {
-                Main.Instance.PlayerController.SwitchWeapon(true);
+                Main.Instance.WeaponsController.SwitchWeapon(true);
             }
             else if (axis < 0)
             {
-                Main.Instance.PlayerController.SwitchWeapon(false);
+                Main.Instance.WeaponsController.SwitchWeapon(false);
             }
+
+            Main.Instance.PlayerController.Move(Input.GetAxis("Horizontal"),
+                                                Input.GetAxis("Vertical"));
+
+            Main.Instance.PlayerController.Rotate(Input.GetAxis("Mouse X"),
+                                                  Input.GetAxis("Mouse Y"));
+            
 
             if (Input.GetButtonDown("M8NextPosition"))
             {

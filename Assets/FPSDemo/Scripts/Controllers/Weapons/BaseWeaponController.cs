@@ -9,6 +9,8 @@ namespace FPSDemo
         private Transform _firepoint;
 
         public GameObject GameObject => gameObject;
+
+        public GameObject Owner;
         
         protected override void Initialize()
         {
@@ -20,6 +22,11 @@ namespace FPSDemo
                     _firepoint = child;
                     break;
                 }
+            }
+
+            if (Owner)
+            {
+                SetOwner(Owner);
             }
         }
         
@@ -60,7 +67,7 @@ namespace FPSDemo
                 ammoRotation = Quaternion.LookRotation(forward);
             }
             var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, ammoRotation);
-            ammo.GetComponent<IFire>().Fire(_model.Power);
+            ammo.GetComponent<IFire>().Fire(_model.Power, _model.Owner);
         }
 
         public bool IsActive()
@@ -73,6 +80,18 @@ namespace FPSDemo
             return hitPoint;
         }
 
+        public void SetOwner(GameObject owner)
+        {
+            if (_model)
+            {
+                _model.Owner = owner;
+                Owner = null;
+            }
+            else
+            {
+                Owner = owner;
+            }
+        }
 
         public abstract void Reload();
         public abstract void TakeAim();

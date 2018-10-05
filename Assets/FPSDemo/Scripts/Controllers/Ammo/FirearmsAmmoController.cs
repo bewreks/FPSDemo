@@ -31,7 +31,7 @@ namespace FPSDemo
                 transform.position = hit.point;
 
                 var d = hit.collider.GetComponent<IDamagable>();
-                d?.DoDamage(_model.Damage);
+                d?.DoDamage(_model.Damage, _model.Owner);
 
                 Destroy(gameObject, 0.3f);
             }

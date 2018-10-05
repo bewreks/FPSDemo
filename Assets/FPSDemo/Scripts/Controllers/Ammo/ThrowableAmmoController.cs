@@ -16,7 +16,6 @@ namespace FPSDemo {
 		protected override void OnInit()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
-			Fire(0);
 		}
 
 		private IEnumerator Fuse()
@@ -28,7 +27,7 @@ namespace FPSDemo {
 			foreach (var hitCollider in colliders)
 			{
 				var d = hitCollider.GetComponent<IDamagable>();
-				d?.DoDamage(_model.Damage);
+				d?.DoDamage(_model.Damage, _model.Owner);
 			}
 			_model.OnExplosion?.Invoke();
 			Destroy(gameObject, 0.3f);

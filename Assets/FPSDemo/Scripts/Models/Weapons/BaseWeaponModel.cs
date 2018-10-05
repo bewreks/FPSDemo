@@ -9,6 +9,7 @@ namespace FPSDemo
         public UnityAction OnShootAfterPrepare;
         
         public GameObject AmmoPrefab;
+        public GameObject Owner;
         
         public float Power;
         public float Timeout;
@@ -18,7 +19,7 @@ namespace FPSDemo
         public int BulletsCountCurrent;
         
         public bool IsTimeout => Time.time < LastShootTime + Timeout;
-        public bool IsEmpty => BulletsCountCurrent <= 0;
+        public virtual bool IsEmpty => BulletsCountCurrent <= 0;
         
     }
 }

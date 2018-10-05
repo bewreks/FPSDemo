@@ -6,6 +6,6 @@ namespace FPSDemo
 {
     public interface IFire
     {
-        void Fire(float force);
+        void Fire(float force, GameObject owner);
     }
 }

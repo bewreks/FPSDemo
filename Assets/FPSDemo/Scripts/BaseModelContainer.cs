@@ -13,6 +13,10 @@ namespace FPSDemo
             _model = GetComponent<M>();
             if (!_model)
             {
+                _model = GetComponentInParent<M>();
+            }
+            if (!_model)
+            {
                 _model = FindObjectOfType<M>();
             }
 			

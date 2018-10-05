@@ -11,6 +11,7 @@ namespace FPSDemo
         void TakeAim();
         void RealizeAim();
         bool IsActive();
+        void SetOwner(GameObject owner);
         GameObject GameObject { get; }
     }
 }

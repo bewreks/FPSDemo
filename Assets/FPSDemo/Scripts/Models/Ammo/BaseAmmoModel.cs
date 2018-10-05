@@ -12,5 +12,7 @@ namespace FPSDemo {
 
 		public bool IsHitted;
 
+		public GameObject Owner;
+
 	}
 }
