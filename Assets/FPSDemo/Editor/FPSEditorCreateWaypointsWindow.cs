@@ -17,10 +17,14 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
     private float _maxRandom = 10;
     private float _minRandom = -10;
 
+    private float _messageTimeout;
+    private string _message;
+    private MessageType _messageType;
+
     void OnGUI()
     {
         var selected = Selection.activeObject as GameObject;
-        if (selected && !WaypointsContainer)
+        if (selected)
         {
             WaypointsContainer = selected;
         }
@@ -29,6 +33,7 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
         if (GUILayout.Button("Create new container"))
         {
             WaypointsContainer = new GameObject("WP_Container");
+            Selection.SetActiveObjectWithContext(WaypointsContainer, null);
         }
 
         WaypointPrefab = CreateField("WP Prefab", WaypointPrefab);
@@ -50,11 +55,13 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
         {
             if (!WaypointsContainer)
             {
+                ShowMessage("Waypoints container is missing", MessageType.Error);
                 return;
             }
 
             if (!WaypointPrefab)
             {
+                ShowMessage("Waypoints prefab is missing", MessageType.Error);
                 return;
             }
 
@@ -76,12 +83,28 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
                 temp.name = "WP" + i.ToString("D2");
                 temp.transform.parent = WaypointsContainer.transform;
             }
+            
+            ShowMessage("Waypoints succesfully created", MessageType.Info);
+        }
+
+        if (_messageTimeout >= 0)
+        {
+            _messageTimeout -= Time.deltaTime;
+            EditorGUILayout.HelpBox(_message, _messageType);
         }
     }
 
     private GameObject CreateField(string fieldName, GameObject gameObject)
     {
         return EditorGUILayout.ObjectField(fieldName, gameObject, typeof(GameObject), true) as GameObject;
-        ;
     }
+
+    private void ShowMessage(string message, MessageType type)
+    {
+        _message = message;
+        _messageType = type;
+        _messageTimeout = 5;
+    }
+    
+    
 }
