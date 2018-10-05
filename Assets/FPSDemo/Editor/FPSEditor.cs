@@ -13,6 +13,12 @@ public static class FPSEditor {
 		CreateScript(path, "TestForTest");
 	}
 
+	[MenuItem("FPSDemo/CreateWaypoints")]
+	public static void CreateWaypoints()
+	{
+		EditorWindow.GetWindow(typeof(FPSEditorCreateWaypointsWindow));
+	}
+
 	private static void CreateScript(string path, string name, string nameSpace = "FPSDemo")
 	{
 		var version = 0;
