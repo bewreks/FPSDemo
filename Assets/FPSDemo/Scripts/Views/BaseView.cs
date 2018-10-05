@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-	public abstract class BaseView<M> : BaseModelContainer<M> where M : BaseModel
+	public abstract class BaseView<M> : BaseModelContainer<M>, IView where M : BaseModel
 	{
 		protected IEnumerator WaitForAnimation ( Animation animation )
 		{

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class FPSEditorCreateWaypointsWindow : EditorWindow
+public class FPSEditorCreateWaypointsWindow : FPSEditorBaseWindow
 {
     internal enum CreationBehaviourEnum
     {
@@ -20,24 +20,15 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
     private float _messageTimeout;
     private string _message;
     private MessageType _messageType;
-
-    void OnGUI()
+    
+    protected override void OnGui()
     {
-        var selected = Selection.activeObject as GameObject;
-        if (selected)
-        {
-            WaypointsContainer = selected;
-        }
+        SetSelected(ref WaypointsContainer);
 
         WaypointsContainer = CreateField("WP Container", WaypointsContainer);
-        if (GUILayout.Button("Create new container"))
-        {
-            WaypointsContainer = new GameObject("WP_Container");
-            Selection.SetActiveObjectWithContext(WaypointsContainer, null);
-        }
-
+        CreateNewField("Create new container", "_Container");
         WaypointPrefab = CreateField("WP Prefab", WaypointPrefab);
-        CreationBehaviour = (CreationBehaviourEnum) EditorGUILayout.EnumPopup("Behaviour:", CreationBehaviour);
+        CreationBehaviour = (CreationBehaviourEnum) EditorGUILayout.EnumPopup("Behaviour", CreationBehaviour);
         _countObject = EditorGUILayout.IntSlider("WP Count", _countObject, 1, 100);
 
         switch (CreationBehaviour)
@@ -86,25 +77,5 @@ public class FPSEditorCreateWaypointsWindow : EditorWindow
             
             ShowMessage("Waypoints succesfully created", MessageType.Info);
         }
-
-        if (_messageTimeout >= 0)
-        {
-            _messageTimeout -= Time.deltaTime;
-            EditorGUILayout.HelpBox(_message, _messageType);
-        }
     }
-
-    private GameObject CreateField(string fieldName, GameObject gameObject)
-    {
-        return EditorGUILayout.ObjectField(fieldName, gameObject, typeof(GameObject), true) as GameObject;
-    }
-
-    private void ShowMessage(string message, MessageType type)
-    {
-        _message = message;
-        _messageType = type;
-        _messageTimeout = 5;
-    }
-    
-    
 }

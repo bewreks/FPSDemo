@@ -1,53 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEditor;
 
 public static class FPSEditor {
 
-	[MenuItem("FPSDemo/Test", false)]
+	[MenuItem("FPSDemo/Test", false, 1)]
 	public static void Test()
 	{
 		var path = EditorUtility.OpenFolderPanel("Choose directory", Application.dataPath, "Views");
 		CreateScript(path, "TestForTest");
+		AssetDatabase.Refresh();
+	}
+	
+	[MenuItem("FPSDemo/Clear scene", false, 3)]
+	public static void ClearScene()
+	{
+		foreach (var gameObject in GameObject.FindObjectsOfType<GameObject>())
+		{
+			GameObject.DestroyImmediate(gameObject);
+		}
 	}
 
-	[MenuItem("FPSDemo/CreateWaypoints")]
+	[MenuItem("FPSDemo/Create/Waypoints", false, 2)]
 	public static void CreateWaypoints()
 	{
 		EditorWindow.GetWindow(typeof(FPSEditorCreateWaypointsWindow));
 	}
 
-	private static void CreateScript(string path, string name, string nameSpace = "FPSDemo")
+	[MenuItem("FPSDemo/Create/Weapon", false, 2)]
+	public static void CreateWeapon()
 	{
-		var version = 0;
+		EditorWindow.GetWindow(typeof(FPSEditorCreateWeaponWindow));
+	}
+
+	public static void CreateScript(string path, string name, string nameSpace = "FPSDemo")
+	{
+		var version = -1;
 		name = name.Replace(" ","_");
 		name = name.Replace("-","_");
 		string creationPath;
 		do
 		{
 			var ext = ".cs";
-			if (version != 0)
+			if (++version != 0)
 			{
-				ext = version++ + ext;
+				ext = version + ext;
 			}
-			creationPath = Path.Combine(path, name + ext);
-		} while (!File.Exists(creationPath));
 
-		using (var file = new StreamWriter(creationPath))
+			creationPath = Path.Combine(path, name + ext);
+		} while (File.Exists(creationPath));
+
+		var code = $"using UnityEngine;\nusing UnityEngine;\n\nnamespace {nameSpace}\n{{\n\t public class {name}{version} : MonoBehaviour\n\t{{\n\t}}\n}}";
+		using (var fs = new FileStream(creationPath, FileMode.Create))
 		{
-			file.WriteLine("using UnityEngine;");
-			file.WriteLine("using System.Collections;");
-			file.WriteLine("");
-			file.WriteLine($"namespace {nameSpace} ");
-			file.WriteLine("{");
-			file.WriteLine("");
-			file.WriteLine($"\t public class {name} : MonoBehaviour");
-			file.WriteLine("{");
-			file.WriteLine("");
-			file.WriteLine("}");
-			file.WriteLine("}");
+			var bytes = Encoding.ASCII.GetBytes(code);
+			fs.Write(bytes, 0, bytes.Length);
+			fs.Close();
 		}
 	}
 }
