@@ -36,11 +36,12 @@ public static class FPSEditor {
 		EditorWindow.GetWindow(typeof(FPSEditorCreateWeaponWindow));
 	}
 
-	public static void CreateScript(string path, string name, string nameSpace = "FPSDemo")
+	public static string CreateScript(string path, string name, string nameSpace = "FPSDemo")
 	{
 		var version = -1;
 		name = name.Replace(" ","_");
 		name = name.Replace("-","_");
+		var className = name;
 		string creationPath;
 		do
 		{
@@ -48,17 +49,20 @@ public static class FPSEditor {
 			if (++version != 0)
 			{
 				ext = version + ext;
+				className = $"{name}{version}";
 			}
 
 			creationPath = Path.Combine(path, name + ext);
 		} while (File.Exists(creationPath));
 
-		var code = $"using UnityEngine;\nusing UnityEngine;\n\nnamespace {nameSpace}\n{{\n\t public class {name}{version} : MonoBehaviour\n\t{{\n\t}}\n}}";
+		var code = $"using UnityEngine;\nusing UnityEngine;\n\nnamespace {nameSpace}\n{{\n\t public class {className} : MonoBehaviour\n\t{{\n\t}}\n}}";
 		using (var fs = new FileStream(creationPath, FileMode.Create))
 		{
 			var bytes = Encoding.ASCII.GetBytes(code);
 			fs.Write(bytes, 0, bytes.Length);
 			fs.Close();
 		}
+
+		return className;
 	}
 }

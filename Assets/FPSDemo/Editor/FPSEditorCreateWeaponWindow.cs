@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using FPSDemo;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -33,7 +34,7 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
 
     private BaseWeaponModel _model;
     private IWeapon _controller;
-    private Object _view;
+    private MonoScript _view;
 
     protected override void OnGui()
     {
@@ -59,23 +60,27 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
             }
         }
         
-        // TODO: добавить возможность добавить view
-        /*EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Select view"))
         {
-            EditorGUIUtility.ShowObjectPicker<MonoBehaviour>(_view, true, "*View", 1);
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(_view, false, "*View", 1);
         }
 
         if (GUILayout.Button("Create new view"))
         {
+            if (!_weaponContainer)
+            {
+                ShowMessage("Container is null", MessageType.Error);
+                return;
+            }
             var path = EditorUtility.OpenFolderPanel("Choose directory for save", Path.Combine(Application.dataPath, "FPSDemo", "Scripts", "Views"), "");
-            FPSEditor.CreateScript(path, $"{_weaponContainer.name}View");
+            string mask = FPSEditor.CreateScript(path, $"{_weaponContainer.name}View");
             ShowMessage("View created", MessageType.Info);
             AssetDatabase.Refresh();
-            EditorGUIUtility.ShowObjectPicker<MonoBehaviour>(_view, true, "*View", 1);
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(_view, false, mask, 1);
         }
 
-        EditorGUILayout.EndHorizontal();*/
+        EditorGUILayout.EndHorizontal();
 
         
 
@@ -118,6 +123,12 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
                 _controller = _weaponContainer.AddComponent<ThrowableWeaponController>();
                 break;
         }
+
+        //TODO: Add component from MonoScript
+        /*
+        var componentType = _view.GetClass();
+        _weaponContainer.AddComponent(componentType);
+        */
 
         _model.AmmoPrefab = _ammoPrefab;
         _model.Power = _power;
