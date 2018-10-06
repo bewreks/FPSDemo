@@ -27,13 +27,13 @@ public static class FPSEditor {
 	[MenuItem("FPSDemo/Create/Waypoints", false, 2)]
 	public static void CreateWaypoints()
 	{
-		EditorWindow.GetWindow(typeof(FPSEditorCreateWaypointsWindow));
+		EditorWindow.GetWindow(typeof(FPSEditorCreateWaypointsWindow), true, "Waypoints");
 	}
 
 	[MenuItem("FPSDemo/Create/Weapon", false, 2)]
 	public static void CreateWeapon()
 	{
-		EditorWindow.GetWindow(typeof(FPSEditorCreateWeaponWindow));
+		EditorWindow.GetWindow(typeof(FPSEditorCreateWeaponWindow), true, "Create weapon");
 	}
 
 	public static string CreateScript(string path, string name, string nameSpace = "FPSDemo")

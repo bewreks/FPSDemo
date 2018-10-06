@@ -40,8 +40,8 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
     {
         SetSelected(ref _weaponContainer);
         _weaponContainer = CreateField("Weapon container", _weaponContainer);
-        _ammoPrefab = CreateField("AmmoPrefab", _ammoPrefab);
         CreateNewField("Create weapon container", "Weapon_Container");
+        _ammoPrefab = CreateField("AmmoPrefab", _ammoPrefab);
         _weaponType = (WeaponTypeEnum) EditorGUILayout.EnumPopup(_weaponType, EditorStyles.popup);
 
         _isShowModelData = EditorGUILayout.Foldout(_isShowModelData, "Weapon data");
@@ -82,29 +82,27 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
 
         EditorGUILayout.EndHorizontal();
 
-        
 
         if (GUILayout.Button("Create weapon"))
         {
-            if (!_weaponContainer)
-            {
-                ShowMessage("Container is null", MessageType.Error);
-                return;
-            }
-
-            if (!_ammoPrefab)
-            {
-                ShowMessage("Prefab is empty", MessageType.Error);
-                return;
-            }
-            
             CreateMVC();
-            ShowMessage("Weapon created", MessageType.Info);
         }
     }
 
     private void CreateMVC()
     {
+        if (!_weaponContainer)
+        {
+            ShowMessage("Container is null", MessageType.Error);
+            return;
+        }
+
+        if (!_ammoPrefab)
+        {
+            ShowMessage("Prefab is empty", MessageType.Error);
+            return;
+        }
+        
         switch (_weaponType)
         {
             case WeaponTypeEnum.Melee:
@@ -134,5 +132,7 @@ public class FPSEditorCreateWeaponWindow : FPSEditorBaseWindow
         _model.Power = _power;
         _model.Timeout = _timeout;
         _model.Preparation = _preparation;
+        
+        ShowMessage("Weapon created", MessageType.Info);
     }
 }
