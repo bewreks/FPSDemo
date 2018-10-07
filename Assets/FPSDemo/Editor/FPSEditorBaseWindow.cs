@@ -11,6 +11,8 @@ public abstract class FPSEditorBaseWindow : EditorWindow
     private float _messageTimeout;
     private string _message;
     private MessageType _messageType;
+    
+    private  int _currentPickerWindow;
 
     private void OnGUI()
     {
@@ -73,7 +75,8 @@ public abstract class FPSEditorBaseWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Select view"))
         {
-            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, "*View", 1);
+            _currentPickerWindow = EditorGUIUtility.GetControlID(FocusType.Passive) + 100;
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, "*View", _currentPickerWindow);
         }
 
         if (GUILayout.Button("Create new view"))
@@ -88,13 +91,15 @@ public abstract class FPSEditorBaseWindow : EditorWindow
                 Path.Combine(Application.dataPath, "FPSDemo", "Scripts", "Views"), "");
             var mask = FPSEditor.CreateScript(path, $"{container.name}View");
             AssetDatabase.Refresh();
-            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, mask, 1);
+            _currentPickerWindow = EditorGUIUtility.GetControlID(FocusType.Passive) + 100;
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, mask, _currentPickerWindow);
             ShowMessage("View created", MessageType.Info);
         }
             
-        if( Event.current.commandName == "ObjectSelectorUpdated")
+        if( Event.current.commandName == "ObjectSelectorUpdated" && EditorGUIUtility.GetObjectPickerControlID() == _currentPickerWindow)
         {        
             view = (MonoScript) EditorGUIUtility.GetObjectPickerObject();
+            _currentPickerWindow = -1;
         }
 
         EditorGUILayout.EndHorizontal();
