@@ -1,87 +1,86 @@
-﻿using UnityEditor;
+﻿using FPSDemo;
+using UnityEditor;
 using UnityEngine;
 
-public class FPSEditorCreateWaypointsWindow : FPSEditorBaseWindow
+namespace FPSDemoEditor.Waypoints
 {
-    internal enum CreationBehaviourEnum
+    internal enum WaypointsCreationBehaviourEnum
     {
         Circle,
         Random
     }
 
-    public GameObject WaypointsContainer;
-    public GameObject WaypointPrefab;
-    CreationBehaviourEnum CreationBehaviour;
-    private int _countObject = 1;
-    private float _radius = 10;
-    private float _maxRandom = 10;
-    private float _minRandom = -10;
-
-    private float _messageTimeout;
-    private string _message;
-    private MessageType _messageType;
-    
-    protected override void OnGui()
+    internal enum WaypointsWaittimeSetterEnum
     {
-        SetSelected(ref WaypointsContainer);
-
-        WaypointsContainer = CreateField("WP Container", WaypointsContainer);
-        CreateNewField("Create new container", "_Container");
-        WaypointPrefab = CreateField("WP Prefab", WaypointPrefab);
-        CreationBehaviour = (CreationBehaviourEnum) EditorGUILayout.EnumPopup("Behaviour", CreationBehaviour);
-        _countObject = EditorGUILayout.IntSlider("WP Count", _countObject, 1, 100);
-
-        switch (CreationBehaviour)
-        {
-            case CreationBehaviourEnum.Circle:
-                _radius = EditorGUILayout.Slider("Radius of circle", _radius, 10, 50);
-                break;
-            case CreationBehaviourEnum.Random:
-                _maxRandom = EditorGUILayout.Slider("Max random position", _maxRandom, 10, 50);
-                _minRandom = EditorGUILayout.Slider("Max random position", _minRandom, -10, -50);
-                break;
-        }
-
-        if (GUILayout.Button("Generate waypoints"))
-        {
-            WaypointsCreation();
-        }
+        Total,
+        Random
     }
 
-    private void WaypointsCreation()
+    public class FPSEditorCreateWaypointsWindow : FPSEditorBaseWindow
     {
-        if (!WaypointsContainer)
-        {
-            ShowMessage("Waypoints container is missing", MessageType.Error);
-            return;
-        }
+        private WaypointCreationBehaviourState _behaviourState;
+        private WaypointsWaittimeSetterState _waittimeSetterState;
+        private GameObject _waypointsContainer;
+        private GameObject _waypointPrefab;
+        private WaypointsCreationBehaviourEnum _waypointsCreationBehaviour;
+        private WaypointsWaittimeSetterEnum _waittimeSetter;
+        private int _countObject = 1;
 
-        if (!WaypointPrefab)
+        protected override void OnGui()
         {
-            ShowMessage("Waypoints prefab is missing", MessageType.Error);
-            return;
-        }
+            SetSelected(ref _waypointsContainer);
 
+            _waypointsContainer = CreateField("WP Container", _waypointsContainer);
+            CreateNewField("Create new container", "WP_Container");
+            
+            ShowDelim();
+            _waypointPrefab = CreateField("WP Prefab", _waypointPrefab);
+            
+            ShowDelim();
+            _countObject = EditorGUILayout.IntSlider("WP Count", _countObject, 1, 100);
+            
+            ShowDelim();
+            _waypointsCreationBehaviour = (WaypointsCreationBehaviourEnum) EditorGUILayout.EnumPopup(_waypointsCreationBehaviour, EditorStyles.toolbarPopup);
+            _behaviourState = WaypointCreationBehaviourState.GetState(_waypointsCreationBehaviour);
+            _behaviourState.Show();
 
-        for (int i = 0; i < _countObject; i++)
-        {
-            var pos = Vector3.zero;
-            switch (CreationBehaviour)
+            ShowDelim();
+            _waittimeSetter = (WaypointsWaittimeSetterEnum) EditorGUILayout.EnumPopup(_waittimeSetter, EditorStyles.toolbarPopup);
+            _waittimeSetterState = WaypointsWaittimeSetterState.GetState(_waittimeSetter);
+            _waittimeSetterState.Show();
+            
+            ShowDelim();
+            if (GUILayout.Button("Generate waypoints"))
             {
-                case CreationBehaviourEnum.Circle:
-                    var angle = i * Mathf.PI * 2 / _countObject;
-                    pos = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * _radius;
-                    break;
-                case CreationBehaviourEnum.Random:
-                    pos = new Vector3(Random.Range(_minRandom, _maxRandom), 0, Random.Range(_minRandom, _maxRandom));
-                    break;
+                WaypointsCreation();
+            }
+        }
+
+        private void WaypointsCreation()
+        {
+            if (!_waypointsContainer)
+            {
+                ShowMessage("Waypoints container is missing", MessageType.Error);
+                return;
             }
 
-            var temp = Instantiate(WaypointPrefab, pos, Quaternion.identity);
-            temp.name = "WP" + i.ToString("D2");
-            temp.transform.parent = WaypointsContainer.transform;
-        }
+            if (!_waypointPrefab)
+            {
+                ShowMessage("Waypoints prefab is missing", MessageType.Error);
+                return;
+            }
 
-        ShowMessage("Waypoints succesfully created", MessageType.Info);
+
+            for (int i = 0; i < _countObject; i++)
+            {
+                var pos = _behaviourState.GetPosition(i, _countObject);
+                var temp = Instantiate(_waypointPrefab, pos, Quaternion.identity);
+                temp.name = "WP" + i.ToString("D2");
+                temp.GetComponent<Waypoint>().WaitTime = _waittimeSetterState.GetWaitTime();
+                temp.transform.parent = _waypointsContainer.transform;
+            }
+
+            ShowMessage("Waypoints succesfully created", MessageType.Info);
+        }
     }
 }

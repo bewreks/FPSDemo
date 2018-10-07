@@ -61,6 +61,12 @@ public abstract class FPSEditorBaseWindow : EditorWindow
         return fieldGameObject;
     }
 
+    protected void ShowDelim()
+    {
+        EditorGUILayout.LabelField("==============================================================", 
+            EditorStyles.centeredGreyMiniLabel);
+    }
+
     protected virtual void OnInit()
     {
         
