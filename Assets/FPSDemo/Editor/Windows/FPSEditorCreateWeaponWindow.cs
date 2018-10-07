@@ -40,14 +40,14 @@ namespace FPSDemoEditor.Weapons
         protected override void OnGui()
         {
             SetSelected(ref _weaponContainer);
-            _weaponContainer = CreateField("Weapon container", _weaponContainer);
+            _weaponContainer = FPSEditorLayout.CreateField("Weapon container", _weaponContainer);
             CreateNewField("Create weapon container", "Weapon_Container");
 
-            ShowDelim();
-            _ammoPrefab = CreateField("AmmoPrefab", _ammoPrefab);
-            _firepointPrefab = CreateField("FirepointPrefab", _firepointPrefab);
+            FPSEditorLayout.ShowDelim();
+            _ammoPrefab = FPSEditorLayout.CreateField("AmmoPrefab", _ammoPrefab);
+            _firepointPrefab = FPSEditorLayout.CreateField("FirepointPrefab", _firepointPrefab);
 
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _weaponType = (WeaponTypeEnum) EditorGUILayout.EnumPopup(_weaponType, EditorStyles.toolbarPopup);
             switch (_weaponType)
             {
@@ -66,10 +66,10 @@ namespace FPSDemoEditor.Weapons
             EditorGUILayout.LabelField("Weapon data");
             _state.Show();
 
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             ShowViewPicker(_weaponContainer, ref _view);
 
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             if (GUILayout.Button("Create weapon"))
             {
                 CreateMVC();

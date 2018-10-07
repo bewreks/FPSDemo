@@ -15,7 +15,7 @@ public static class FPSEditor
     public static void Test()
     {
 //        var path = EditorUtility.OpenFolderPanel("Choose directory", Application.dataPath, "Views");
-        var monoScript = CreateScript(Application.dataPath, "TestForTest");
+        CreateScript(Application.dataPath, "TestForTest");
         AssetDatabase.Refresh();
     }
 

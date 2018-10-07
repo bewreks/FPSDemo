@@ -43,14 +43,14 @@ namespace FPSDemoEditor.Ammo
         protected override void OnGui()
         {
             SetSelected(ref _ammoContainer);
-            _ammoContainer = CreateField("Ammo container", _ammoContainer);
+            _ammoContainer = FPSEditorLayout.CreateField("Ammo container", _ammoContainer);
             CreateNewField("Create ammo container", "Ammo_container");
 
             
-            ShowDelim();
-            _visualModel = CreateField("Visual model", _visualModel);
+            FPSEditorLayout.ShowDelim();
+            _visualModel = FPSEditorLayout.CreateField("Visual model", _visualModel);
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _ammoType = (AmmoTypeEnum) EditorGUILayout.EnumPopup(_ammoType, EditorStyles.toolbarPopup);
             switch (_ammoType)
             {
@@ -67,7 +67,7 @@ namespace FPSDemoEditor.Ammo
             }
             _state.Show();
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _needLight = EditorGUILayout.ToggleLeft("Add light", _needLight);
             
             
@@ -77,10 +77,10 @@ namespace FPSDemoEditor.Ammo
             EditorGUILayout.EndToggleGroup();
             
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             ShowViewPicker(_ammoContainer, ref _view);
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             if (GUILayout.Button("CreateAmmo"))
             {
                 if (!_ammoContainer)

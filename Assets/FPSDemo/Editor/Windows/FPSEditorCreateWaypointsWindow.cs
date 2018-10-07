@@ -30,26 +30,26 @@ namespace FPSDemoEditor.Waypoints
         {
             SetSelected(ref _waypointsContainer);
 
-            _waypointsContainer = CreateField("WP Container", _waypointsContainer);
+            _waypointsContainer = FPSEditorLayout.CreateField("WP Container", _waypointsContainer);
             CreateNewField("Create new container", "WP_Container");
             
-            ShowDelim();
-            _waypointPrefab = CreateField("WP Prefab", _waypointPrefab);
+            FPSEditorLayout.ShowDelim();
+            _waypointPrefab = FPSEditorLayout.CreateField("WP Prefab", _waypointPrefab);
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _countObject = EditorGUILayout.IntSlider("WP Count", _countObject, 1, 100);
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _waypointsCreationBehaviour = (WaypointsCreationBehaviourEnum) EditorGUILayout.EnumPopup(_waypointsCreationBehaviour, EditorStyles.toolbarPopup);
             _behaviourState = WaypointCreationBehaviourState.GetState(_waypointsCreationBehaviour);
             _behaviourState.Show();
 
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             _waittimeSetter = (WaypointsWaittimeSetterEnum) EditorGUILayout.EnumPopup(_waittimeSetter, EditorStyles.toolbarPopup);
             _waittimeSetterState = WaypointsWaittimeSetterState.GetState(_waittimeSetter);
             _waittimeSetterState.Show();
             
-            ShowDelim();
+            FPSEditorLayout.ShowDelim();
             if (GUILayout.Button("Generate waypoints"))
             {
                 WaypointsCreation();
