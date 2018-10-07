@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -65,6 +66,38 @@ public abstract class FPSEditorBaseWindow : EditorWindow
     {
         EditorGUILayout.LabelField("==============================================================", 
             EditorStyles.centeredGreyMiniLabel);
+    }
+
+    protected void ShowViewPicker(GameObject container, ref MonoScript view)
+    {
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Select view"))
+        {
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, "*View", 1);
+        }
+
+        if (GUILayout.Button("Create new view"))
+        {
+            if (!container)
+            {
+                ShowMessage("Container is null", MessageType.Error);
+                return;
+            }
+
+            var path = EditorUtility.OpenFolderPanel("Choose directory for save",
+                Path.Combine(Application.dataPath, "FPSDemo", "Scripts", "Views"), "");
+            var mask = FPSEditor.CreateScript(path, $"{container.name}View");
+            AssetDatabase.Refresh();
+            EditorGUIUtility.ShowObjectPicker<MonoScript>(view, false, mask, 1);
+            ShowMessage("View created", MessageType.Info);
+        }
+            
+        if( Event.current.commandName == "ObjectSelectorUpdated")
+        {        
+            view = (MonoScript) EditorGUIUtility.GetObjectPickerObject();
+        }
+
+        EditorGUILayout.EndHorizontal();
     }
 
     protected virtual void OnInit()

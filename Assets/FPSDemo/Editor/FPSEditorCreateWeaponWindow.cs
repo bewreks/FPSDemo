@@ -36,7 +36,7 @@ namespace FPSDemoEditor.Weapons
         private WeaponTypeEnum _weaponType;
 
         private MonoScript _view;
-
+        
         protected override void OnGui()
         {
             SetSelected(ref _weaponContainer);
@@ -67,29 +67,7 @@ namespace FPSDemoEditor.Weapons
             _state.Show();
 
             ShowDelim();
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Select view"))
-            {
-                EditorGUIUtility.ShowObjectPicker<MonoScript>(_view, false, "*View", 1);
-            }
-
-            if (GUILayout.Button("Create new view"))
-            {
-                if (!_weaponContainer)
-                {
-                    ShowMessage("Container is null", MessageType.Error);
-                    return;
-                }
-
-                var path = EditorUtility.OpenFolderPanel("Choose directory for save",
-                    Path.Combine(Application.dataPath, "FPSDemo", "Scripts", "Views"), "");
-                string mask = FPSEditor.CreateScript(path, $"{_weaponContainer.name}View");
-                ShowMessage("View created", MessageType.Info);
-                AssetDatabase.Refresh();
-                EditorGUIUtility.ShowObjectPicker<MonoScript>(_view, false, mask, 1);
-            }
-
-            EditorGUILayout.EndHorizontal();
+            ShowViewPicker(_weaponContainer, ref _view);
 
             ShowDelim();
             if (GUILayout.Button("Create weapon"))

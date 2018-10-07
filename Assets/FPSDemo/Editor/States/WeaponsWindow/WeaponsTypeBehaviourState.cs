@@ -38,10 +38,11 @@ namespace FPSDemoEditor.Weapons
 
         public void AddView(GameObject container, MonoScript view)
         {
-            /*
-            var componentType = view.GetClass();
-            container.AddComponent(componentType);
-            */            
+            if (view != null)
+            {
+                var componentType = view.GetClass();
+                container.AddComponent(componentType);
+            }
         }
 
         protected abstract void OnShow();

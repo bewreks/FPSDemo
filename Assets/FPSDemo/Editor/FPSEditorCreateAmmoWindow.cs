@@ -29,12 +29,16 @@ namespace FPSDemoEditor.Ammo
         private AmmoCreationState<FirearmsAmmoModel, FirearmsAmmoController> _firearmsState = new FirearmsAmmoCreationState();
 
         private GameObject _ammoContainer;
+        private GameObject _visualModel;
+        
         private AmmoTypeEnum _ammoType;
         private ColliderTypeEnum _colliderType;
 
         private bool _needCollider;
         private bool _needLight;
         private bool _needParticleSystem;
+
+        private MonoScript _view;
 
         protected override void OnGui()
         {
@@ -44,7 +48,10 @@ namespace FPSDemoEditor.Ammo
 
             
             ShowDelim();
-            _ammoType = (AmmoTypeEnum) EditorGUILayout.EnumPopup(_ammoType);
+            _visualModel = CreateField("Visual model", _visualModel);
+            
+            ShowDelim();
+            _ammoType = (AmmoTypeEnum) EditorGUILayout.EnumPopup(_ammoType, EditorStyles.toolbarPopup);
             switch (_ammoType)
             {
                 case AmmoTypeEnum.Melee:
@@ -71,6 +78,9 @@ namespace FPSDemoEditor.Ammo
             
             
             ShowDelim();
+            ShowViewPicker(_ammoContainer, ref _view);
+            
+            ShowDelim();
             if (GUILayout.Button("CreateAmmo"))
             {
                 if (!_ammoContainer)
@@ -80,6 +90,11 @@ namespace FPSDemoEditor.Ammo
                 }
                 
                 _state.Create(_ammoContainer);
+
+                if (_visualModel)
+                {
+                    Instantiate(_visualModel, Vector3.zero, Quaternion.identity, _ammoContainer.transform);
+                }
 
                 if (_needLight)
                 {
@@ -105,6 +120,11 @@ namespace FPSDemoEditor.Ammo
                 if (_needParticleSystem)
                 {
                     _ammoContainer.AddComponent<ParticleSystem>();
+                }
+
+                if (_view)
+                {
+                    _ammoContainer.AddComponent(_view.GetClass());
                 }
                 ShowMessage("Ammo succesfully created", MessageType.Info);
             }
