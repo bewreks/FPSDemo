@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace FPSDemo
 {
-    
+    // TODO: сделать миникарту, которая по нескольким этажам в автоматическом режиме работает
     public class Minimap : MonoBehaviour
     {
         public UnityAction OnMinimapInit;
