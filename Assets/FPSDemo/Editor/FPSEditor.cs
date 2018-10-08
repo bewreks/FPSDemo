@@ -15,8 +15,8 @@ public static class FPSEditor
     public static void Test()
     {
 //        var path = EditorUtility.OpenFolderPanel("Choose directory", Application.dataPath, "Views");
-        CreateScript(Application.dataPath, "TestForTest");
-        AssetDatabase.Refresh();
+//        CreateScript(Application.dataPath, "TestForTest");
+//        AssetDatabase.Refresh();
     }
 
     [MenuItem("FPSDemo/Clear scene", false, 3)]
