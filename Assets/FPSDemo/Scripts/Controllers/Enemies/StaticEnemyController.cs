@@ -54,7 +54,6 @@ namespace FPSDemo
 
         private void PlayerLost(GameObject obj, int i)
         {
-            Debug.Log($"Lost {i}");
             OnPlayerLost?.Invoke(obj);
         }
 
