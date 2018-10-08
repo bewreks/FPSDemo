@@ -73,5 +73,13 @@ namespace FPSDemo
                 Main.Instance.TeammateController.Call();
             }
         }
+
+        private void OnGUI()
+        {
+            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.SysReq)
+            {
+                Main.Instance.TakeScreenShot();
+            }
+        }
     }
 }
