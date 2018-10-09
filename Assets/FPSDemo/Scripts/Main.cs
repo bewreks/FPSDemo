@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +10,7 @@ namespace FPSDemo
         public static UnityAction OnInitialize;
         public static bool _isInitialized = false;
         public static bool IsInitialized => _isInitialized;
-        
+
         public static Main Instance { get; private set; }
 
         public InputController InputController { get; private set; }
@@ -21,8 +18,8 @@ namespace FPSDemo
         public WeaponsController WeaponsController { get; private set; }
         public TeammateController TeammateController { get; private set; }
         public PlayerController PlayerController { get; private set; }
-        
-        
+
+
         private Texture2D _screenshot;
         private int _uninitedControllersCounter;
 
@@ -45,12 +42,14 @@ namespace FPSDemo
             RegisterController<TeammateController, TeammateModel>(TeammateController);
             PlayerController = FindObjectOfType<PlayerController>();
             RegisterController<PlayerController, PlayerModel>(PlayerController);
-            
+
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
-            
+
             CheckInit();
         }
+
+        #region Controllers
 
         private void RegisterController<C, M>(C controller)
             where C : BaseController<M>
@@ -78,6 +77,10 @@ namespace FPSDemo
             }
         }
 
+        #endregion
+
+        #region Screenshot
+
         public void TakeScreenShot()
         {
             _screenshot = ScreenCapture.CaptureScreenshotAsTexture();
@@ -90,5 +93,13 @@ namespace FPSDemo
             var bytes = _screenshot.EncodeToPNG();
             File.WriteAllBytes(Path.Combine(Application.dataPath, "Screenshots", filename), bytes);
         }
+
+        #endregion
+
+        #region Saves
+
+        
+
+        #endregion
     }
 }
