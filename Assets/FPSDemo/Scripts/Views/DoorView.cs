@@ -27,8 +27,22 @@ namespace FPSDemo
 
         private void OnSwitch()
         {
-            _state = _model.IsOpened ? _openState : _closeState;
-            _time = _state.UpdateTime(_time);
+            var stateChanged = false;
+            if (_model.IsOpened)
+            {
+                stateChanged = _state != _openState;
+                _state = _openState;
+            }
+            else
+            {
+                stateChanged = _state != _closeState;
+                _state = _closeState;
+            }
+
+            if (stateChanged)
+            {
+                _time = _state.UpdateTime(_time);
+            }
         }
 
         private void Update()
