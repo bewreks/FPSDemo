@@ -18,6 +18,7 @@ namespace FPSDemo
         public WeaponsController WeaponsController { get; private set; }
         public TeammateController TeammateController { get; private set; }
         public PlayerController PlayerController { get; private set; }
+        public EnemiesController EnemiesController { get; private set; }
 
 
         private Texture2D _screenshot;
@@ -42,6 +43,9 @@ namespace FPSDemo
             RegisterController<TeammateController, TeammateModel>(TeammateController);
             PlayerController = FindObjectOfType<PlayerController>();
             RegisterController<PlayerController, PlayerModel>(PlayerController);
+            EnemiesController = FindObjectOfType<EnemiesController>();
+            RegisterController<EnemiesController, EnemiesModel>(EnemiesController);
+            
 
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
