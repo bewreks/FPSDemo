@@ -6,6 +6,11 @@ namespace FPSDemo
     {
         private void Update()
         {
+            if (!Main.IsInitialized)
+            {
+                return;
+            }
+            
             if (Input.GetButtonDown("SwitchFlashlight"))
             {
                 Main.Instance.FlashlightController.Switch();
@@ -76,6 +81,11 @@ namespace FPSDemo
 
         private void OnGUI()
         {
+            if (!Main.IsInitialized)
+            {
+                return;
+            }
+            
             if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.SysReq)
             {
                 Main.Instance.TakeScreenShot();
