@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FPSDemoEditor;
 using FPSDemoEditor.Ammo;
 using FPSDemoEditor.Waypoints;
 using FPSDemoEditor.Weapons;
@@ -17,6 +18,11 @@ public static class FPSEditor
 //        var path = EditorUtility.OpenFolderPanel("Choose directory", Application.dataPath, "Views");
 //        CreateScript(Application.dataPath, "TestForTest");
 //        AssetDatabase.Refresh();
+    }
+    [MenuItem("FPSDemo/Cast shadows turner", false, 2)]
+    public static void CastShadowsOff()
+    {
+        EditorWindow.GetWindow(typeof(FPSEditorShadowsTurner), true, "Shadows");
     }
 
     [MenuItem("FPSDemo/Clear scene", false, 3)]
