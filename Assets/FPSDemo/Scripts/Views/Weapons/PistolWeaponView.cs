@@ -21,9 +21,9 @@ namespace FPSDemo
     
     public class PistolWeaponView : BaseWeaponView<FirearmsWeaponModel>
     {
-        
         public ReloadTransform ReloadTransform;
         public AimTransform AimTransform;
+        private PistolAnimationTrigger _trigger;
         private Light _light;
 
         private Vector3 _rotationStart;
@@ -31,12 +31,16 @@ namespace FPSDemo
         protected override void OnInitialize()
         {
             AimTransform.OldFieldOfView = Camera.main.fieldOfView;
+            _trigger = GetComponentInChildren<PistolAnimationTrigger>();
+            _trigger.OnReloadEnd += OnReloadEnd;
+            _trigger.OnReloadRotationStart += OnReloadRotationStart;
+            _trigger.OnReloadRotationEnd += OnReloadRotationEnd;
             _light = _firepoint.GetComponent<Light>();
             _model.OnShoot += OnShoot;
-            _model.OnEmptyShoot += OnEmptyShoot;
             _model.OnReload += OnReload;
             _model.OnTakeAim += OnTakeAim;
             _model.OnRealizeAim += OnRealizeAim;
+            _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
         }
 
         private void OnRealizeAim()
@@ -53,39 +57,18 @@ namespace FPSDemo
 
         private void OnReload()
         {
-            StartCoroutine(StartReload("StandardReload"));
-        }
-
-        private void OnEmptyShoot()
-        {
-            Shoot("FireEmpty");
-        }
-
-        private void OnShoot()
-        {
-            Shoot("Fire");
-        }
-
-        private void Shoot(string animatioinName)
-        {
-            _animation.Play(animatioinName);
-            StartCoroutine(ShowReflect());
-        }
-
-        private IEnumerator StartReload(string animatioinName)
-        {
             _model.OnTakeAim -= OnTakeAim;
             _model.OnRealizeAim -= OnRealizeAim;
             if (_model.IsAim)
             {
                 OnRealizeAim();
             }
-            transform.Translate(ReloadTransform.ReloadPosition);
-            transform.Rotate(ReloadTransform.ReloadRotation);
-            _animation.Play(animatioinName);
-            yield return WaitForAnimation(_animation);
-            transform.Rotate(-ReloadTransform.ReloadRotation);
-            transform.Translate(-ReloadTransform.ReloadPosition);
+            _animator.SetTrigger("Reload");
+            _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
+        }
+
+        private void OnReloadEnd()
+        {
             _model.OnTakeAim += OnTakeAim;
             _model.OnRealizeAim += OnRealizeAim;
             if (_model.IsAim)
@@ -94,12 +77,40 @@ namespace FPSDemo
             }
         }
 
+        private void OnReloadRotationEnd()
+        {
+            transform.Rotate(-ReloadTransform.ReloadRotation);
+            transform.Translate(-ReloadTransform.ReloadPosition);
+        }
+
+        private void OnReloadRotationStart()
+        {
+            transform.Translate(ReloadTransform.ReloadPosition);
+            transform.Rotate(ReloadTransform.ReloadRotation);
+        }
+
+        private void OnShoot()
+        {
+            _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
+            _animator.SetTrigger("Fire");
+            StartCoroutine(ShowReflect());
+        }
+
         private IEnumerator ShowReflect()
         {
             yield return new WaitForSeconds(0.1f);
             _light.enabled = true;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             _light.enabled = false;
-        } 
+        }
+
+        private void OnEnable()
+        {
+            if (IsInitialized)
+            {
+                _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
+                _animator.SetTrigger("Take");
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace FPSDemo
     {
         protected GameObject _firepoint;
         protected Animation _animation;
+        protected Animator _animator;
         
         protected override void Initialize()
         {
@@ -21,6 +22,7 @@ namespace FPSDemo
                 }
             }
             _animation = transform.GetComponentInChildren<Animation>();
+            _animator = transform.GetComponentInChildren<Animator>();
             OnInitialize();
         }
 

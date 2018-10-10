@@ -36,16 +36,7 @@ namespace FPSDemo
 
         protected override void OnShoot()
         {
-            
-            
-            if (_model.BulletsCountCurrent == 0)
-            {
-                _model.OnEmptyShoot?.Invoke();
-            }
-            else
-            {
-                _model.OnShoot?.Invoke();
-            }
+            _model.OnShoot?.Invoke();
         }
 
         protected override Vector3 CheckHitPoint(Vector3 hitPoint)

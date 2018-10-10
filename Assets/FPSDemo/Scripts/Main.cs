@@ -52,8 +52,10 @@ namespace FPSDemo
 
         private void Start()
         {
+#if !UNITY_EDITOR
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+#endif
 
             // В будущем планируется ввести контроллер инвентаря
             // Количество патронов в каждом оружии будет храниться там
@@ -164,7 +166,9 @@ namespace FPSDemo
         private string CreateDirectory(string name)
         {
             var prefsName = $"{name}Directory";
-            var directory = PlayerPrefs.HasKey(prefsName) ? PlayerPrefs.GetString(prefsName) : Path.Combine(Application.dataPath, name);
+            var directory = PlayerPrefs.HasKey(prefsName)
+                ? PlayerPrefs.GetString(prefsName)
+                : Path.Combine(Application.dataPath, name);
 
             PlayerPrefs.SetString(prefsName, directory);
             if (!Directory.Exists(directory))
