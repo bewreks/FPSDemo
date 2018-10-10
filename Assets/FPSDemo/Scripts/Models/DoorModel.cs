@@ -8,6 +8,8 @@ namespace FPSDemo
         public UnityAction OnSwitch;
         
         public Vector3 Offset;
+        public float TranslateTime;
+        
         private bool _isOpened;
 
         public bool IsOpened

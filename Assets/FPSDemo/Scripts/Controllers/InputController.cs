@@ -6,6 +6,11 @@ namespace FPSDemo
     {
         private void Update()
         {
+            if (!Main.IsInitialized)
+            {
+                return;
+            }
+            
             if (Input.GetButtonDown("SwitchFlashlight"))
             {
                 Main.Instance.FlashlightController.Switch();
@@ -71,6 +76,28 @@ namespace FPSDemo
             if (Input.GetButtonDown("CallM8"))
             {
                 Main.Instance.TeammateController.Call();
+            }
+
+            if (Input.GetKeyUp(KeyCode.F5))
+            {
+                Main.Instance.Save();
+            }
+            if (Input.GetKeyUp(KeyCode.F9))
+            {
+                Main.Instance.Load();
+            }
+        }
+
+        private void OnGUI()
+        {
+            if (!Main.IsInitialized)
+            {
+                return;
+            }
+            
+            if (Event.current.type == EventType.KeyUp && Event.current.keyCode == KeyCode.SysReq)
+            {
+                Main.Instance.TakeScreenShot();
             }
         }
     }

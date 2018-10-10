@@ -18,6 +18,9 @@ namespace FPSDemo
 
         public float StartReloadTime;
 
+        public AnimationCurve HorizontalBob;
+        public AnimationCurve VerticalBob;
+
         private bool _isAim;
 
         public bool IsAim

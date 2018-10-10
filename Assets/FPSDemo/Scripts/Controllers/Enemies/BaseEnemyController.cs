@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace FPSDemo
 {
-    public abstract class BaseEnemyController : BaseController<EnemyModel>, IDamagable
+    public abstract class BaseEnemyController : BaseController<EnemyModel>, IDamagable, ISerializable
     {
         public UnityAction OnInit;
         private Transform _previousTarget;
@@ -123,5 +123,27 @@ namespace FPSDemo
         protected abstract void OnTracking();
         protected abstract void OnChasing();
         protected abstract void OnStay();
+        public string SerializedName => name;
+        
+
+        public SerializableObject Serialize()
+        {
+            var serializableObject = new SerializableObject(name);
+            serializableObject.AddVector3("Position", transform.position);
+            serializableObject.AddQuaternion("Rotation", transform.rotation);
+            serializableObject.AddFloat("Hp", _model.Hp);
+            serializableObject.AddInt("ArmorType", _model.Armor.ArmorType);
+            serializableObject.AddFloat("Armor", _model.Armor.AbsArmor);
+            return serializableObject;
+        }
+
+        public void Unserialize(SerializableObject serializableObject)
+        {
+            transform.position = serializableObject.GetVector3("Position");
+            transform.rotation = serializableObject.GetQuaternion("Rotation");
+            _model.Hp = serializableObject.GetFloat("Hp");
+            _model.Armor.ArmorType = serializableObject.GetInt("ArmorType");
+            _model.Armor.CurrentArmor = serializableObject.GetFloat("Armor");
+        }
     }
 }

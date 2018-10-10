@@ -22,6 +22,11 @@ namespace FPSDemo
             }
         }
 
+        public float AbsArmor
+        {
+            get { return _armor; }
+        }
+
         public UnityAction OnArmorChanged;
         
         public float CalculateDamage(float damage)

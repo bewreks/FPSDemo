@@ -46,8 +46,11 @@ namespace FPSDemo
         {
             if (_model.TimerCoef <= _model.MinRate)
             {
-                var time = _model.TimerCoef * (1 / _model.MinRate);
-                _model.Intensity = _model.IntensityCurve.Evaluate(time);
+                var time = 1 - (_model.TimerCoef * (1 / _model.MinRate));
+
+                var modelIntensity = _model.IntensityCurve.Evaluate(time);
+                _model.Intensity = modelIntensity;
+                
             }
             else
             {
