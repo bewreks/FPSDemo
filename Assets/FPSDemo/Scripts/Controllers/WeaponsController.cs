@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-    public class WeaponsController : BaseController<WeaponsModel>
+    public class WeaponsController : BaseController<WeaponsModel>, ISerializable
     {
         protected GameObject _camera;
+        public string SerializedName => "Weapons";
 
         public IWeapon CurrentWeapon => _model.CurrentWeaponController;
 
@@ -48,6 +49,20 @@ namespace FPSDemo
                     _model.CurrentWeapon = _model.WeaponsCount;
                 }
             }
+            CurrentWeapon.GameObject.SetActive(true);
+        }
+
+        public SerializableObject Serialize()
+        {
+            var serializableObject = new SerializableObject(SerializedName);
+            serializableObject.AddInt("CurrentWeapon", _model.CurrentWeapon);
+            return serializableObject;
+        }
+
+        public void Unserialize(SerializableObject serializableObject)
+        {
+            CurrentWeapon.GameObject.SetActive(false);
+            _model.CurrentWeapon = serializableObject.GetInt("CurrentWeapon");
             CurrentWeapon.GameObject.SetActive(true);
         }
     }

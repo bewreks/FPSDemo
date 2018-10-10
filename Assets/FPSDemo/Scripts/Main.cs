@@ -5,11 +5,19 @@ using UnityEngine.Events;
 
 namespace FPSDemo
 {
+    public enum SaveType
+    {
+        TXT,
+        XML,
+        JSON
+    }
+
     public class Main : MonoBehaviour
     {
         public static UnityAction OnInitialize;
         public static bool _isInitialized = false;
         public static bool IsInitialized => _isInitialized;
+
 
         public static Main Instance { get; private set; }
 
@@ -20,16 +28,26 @@ namespace FPSDemo
         public PlayerController PlayerController { get; private set; }
         public EnemiesController EnemiesController { get; private set; }
 
+        public SaveType SaveType;
 
         private Texture2D _screenshot;
+
         private int _uninitedControllersCounter;
+        private string _screenshotDirectory;
+        private string _savesDirectory;
+
+        private BaseSaver _saver;
 
         private void Awake()
         {
             if (Instance)
                 DestroyImmediate(this);
             else
+            {
                 Instance = this;
+                _screenshotDirectory = CreateDirectory("Screenshots");
+                _savesDirectory = CreateDirectory("Saves");
+            }
         }
 
         private void Start()
@@ -37,6 +55,9 @@ namespace FPSDemo
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
+            // В будущем планируется ввести контроллер инвентаря
+            // Количество патронов в каждом оружии будет храниться там
+            // Состояние тиммейта не сохраняется. Скорее всего он будет в последствии удален как не нужный
             WeaponsController = FindObjectOfType<WeaponsController>();
             RegisterController<WeaponsController, WeaponsModel>(WeaponsController);
             TeammateController = FindObjectOfType<TeammateController>();
@@ -45,7 +66,7 @@ namespace FPSDemo
             RegisterController<PlayerController, PlayerModel>(PlayerController);
             EnemiesController = FindObjectOfType<EnemiesController>();
             RegisterController<EnemiesController, EnemiesModel>(EnemiesController);
-            
+
 
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
@@ -91,18 +112,72 @@ namespace FPSDemo
             Invoke("SaveTextureToFile", 0);
         }
 
-        private void SaveTextureToFile()
-        {
-            var filename = String.Format("{0:ddMMyyyy_HHmmssfff}.png", DateTime.Now);
-            var bytes = _screenshot.EncodeToPNG();
-            File.WriteAllBytes(Path.Combine(Application.dataPath, "Screenshots", filename), bytes);
-        }
-
         #endregion
 
         #region Saves
 
-        
+        private void SetSaver()
+        {
+            switch (SaveType)
+            {
+                case SaveType.XML:
+                    _saver = new XMLSaver();
+                    break;
+                case SaveType.JSON:
+                    _saver = new JSONSaver();
+                    break;
+                case SaveType.TXT:
+                default:
+                    _saver = new TextSaver();
+                    break;
+            }
+        }
+
+        public void Save()
+        {
+            SetSaver();
+
+
+            _saver.AddSavable(PlayerController);
+            _saver.AddSavable(WeaponsController);
+            _saver.AddSavable(EnemiesController);
+            _saver.Save(_savesDirectory);
+        }
+
+        public void Load()
+        {
+            SetSaver();
+
+            _saver.AddLoadable(PlayerController);
+            _saver.AddLoadable(WeaponsController);
+            _saver.AddLoadable(EnemiesController);
+            _saver.Load(_savesDirectory);
+        }
+
+        private void SaveTextureToFile()
+        {
+            var filename = String.Format("{0:ddMMyyyy_HHmmssfff}.png", DateTime.Now);
+            var bytes = _screenshot.EncodeToPNG();
+            File.WriteAllBytes(Path.Combine(_screenshotDirectory, filename), bytes);
+        }
+
+        private string CreateDirectory(string name)
+        {
+            var prefsName = $"{name}Directory";
+            if (PlayerPrefs.HasKey(prefsName))
+            {
+                return PlayerPrefs.GetString(prefsName);
+            }
+            
+            var directory = Path.Combine(Application.dataPath, name);
+            PlayerPrefs.SetString(prefsName, directory);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            return directory;
+        }
 
         #endregion
     }

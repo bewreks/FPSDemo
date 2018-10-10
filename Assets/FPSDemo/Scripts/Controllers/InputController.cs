@@ -77,6 +77,15 @@ namespace FPSDemo
             {
                 Main.Instance.TeammateController.Call();
             }
+
+            if (Input.GetKeyUp(KeyCode.F5))
+            {
+                Main.Instance.Save();
+            }
+            if (Input.GetKeyUp(KeyCode.F9))
+            {
+                Main.Instance.Load();
+            }
         }
 
         private void OnGUI()

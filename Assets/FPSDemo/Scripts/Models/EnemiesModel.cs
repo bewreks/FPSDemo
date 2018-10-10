@@ -4,5 +4,6 @@
     {
         public StaticEnemyController Projector;
         public MovableEnemyController Robot;
+        public MovableEnemyController ProjectorTracker;
     }
 }
