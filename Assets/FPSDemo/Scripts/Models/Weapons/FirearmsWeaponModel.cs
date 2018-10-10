@@ -28,14 +28,17 @@ namespace FPSDemo
             get { return _isAim; }
             set
             {
-                _isAim = value;
-                if (_isAim)
+                if (_isAim != value)
                 {
-                    OnTakeAim?.Invoke();
-                }
-                else
-                {
-                    OnRealizeAim?.Invoke();
+                    _isAim = value;
+                    if (_isAim)
+                    {
+                        OnTakeAim?.Invoke();
+                    }
+                    else
+                    {
+                        OnRealizeAim?.Invoke();
+                    }
                 }
             }
         }
