@@ -13,7 +13,7 @@ namespace FPSDemo
         protected override void Initialize()
         {
             _model.Weapons = new List<IWeapon>();
-            _camera = transform.GetChild(0).gameObject;
+            _camera = gameObject.GetComponentInChildren<Camera>().gameObject;
             for (int i = 0; i < _camera.transform.childCount; i++)
             {
                 var child = _camera.transform.GetChild(i);
