@@ -7,6 +7,7 @@ namespace FPSDemo
 {
     public class PlayerModel : BaseModel
     {
+        public UnityAction OnHpChanged;
         public float HorizontalSensivity = 2;
         public float VerticalSensivity = 2;
 
@@ -16,6 +17,22 @@ namespace FPSDemo
         public float MaxAngle = 80;
 
         public float Gravity = -9.8f;
+        
+        public Armor Armor = new Armor{ArmorType = 3, BaseArmor = 100};
+        
+        public float BaseHp = 100;
+        public float CurrentHP => BaseHp + _hp;
+        public bool IsDead => CurrentHP <= 0;
+
+        public float Hp
+        {
+            get { return _hp; }
+            set
+            {
+                _hp = value;
+                OnHpChanged?.Invoke();
+            }
+        }
 
         public UnityAction<Vector3> OnMove;
         public UnityAction<Vector2> OnRotate;
@@ -25,6 +42,7 @@ namespace FPSDemo
         private Vector2 _rotateVector;
 
         private Quaternion _summaryRotation;
+        private float _hp;
 
         public Quaternion SummaryRotation
         {

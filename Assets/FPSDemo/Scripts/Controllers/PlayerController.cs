@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FPSDemo
 {
-    public class PlayerController : BaseController<PlayerModel>, ISerializable
+    public class PlayerController : BaseController<PlayerModel>, ISerializable, IDamagable
     {
         public string SerializedName => "Player";
 
@@ -13,6 +13,11 @@ namespace FPSDemo
 
         public void Move(float x, float y)
         {
+            if (_model.IsDead)
+            {
+                return;
+            }
+            
             var movement = new Vector3(x, 0, y) * _model.Speed;
             movement = Vector3.ClampMagnitude(movement, _model.Speed);
 
@@ -25,6 +30,11 @@ namespace FPSDemo
 
         public void Rotate(float x, float y)
         {
+            if (_model.IsDead)
+            {
+                return;
+            }
+            
             var rotationY = x * _model.HorizontalSensivity;
             var rotationX = y * _model.VerticalSensivity;
 
@@ -38,6 +48,7 @@ namespace FPSDemo
             serializableObject.AddFloat("VerticalSensivity", _model.VerticalSensivity);
             serializableObject.AddVector3("Position", _model.transform.position);
             serializableObject.AddQuaternion("Rotation", _model.SummaryRotation);
+            serializableObject.AddFloat("Hp", _model.Hp);
             return serializableObject;
         }
 
@@ -52,6 +63,17 @@ namespace FPSDemo
             _model.VerticalSensivity = serializableObject.GetFloat("VerticalSensivity");
             _model.transform.position = serializableObject.GetVector3("Position");
             _model.SummaryRotation = serializableObject.GetQuaternion("Rotation");
+            _model.Hp = serializableObject.GetFloat("Hp");
+        }
+
+        public void DoDamage(float damage, GameObject owner)
+        {
+            if (_model.IsDead)
+            {
+                return;
+            }
+            
+            _model.Hp -= _model.Armor.CalculateDamage(damage);
         }
     }
 }
