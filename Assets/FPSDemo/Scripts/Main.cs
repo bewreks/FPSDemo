@@ -164,12 +164,8 @@ namespace FPSDemo
         private string CreateDirectory(string name)
         {
             var prefsName = $"{name}Directory";
-            if (PlayerPrefs.HasKey(prefsName))
-            {
-                return PlayerPrefs.GetString(prefsName);
-            }
-            
-            var directory = Path.Combine(Application.dataPath, name);
+            var directory = PlayerPrefs.HasKey(prefsName) ? PlayerPrefs.GetString(prefsName) : Path.Combine(Application.dataPath, name);
+
             PlayerPrefs.SetString(prefsName, directory);
             if (!Directory.Exists(directory))
             {
