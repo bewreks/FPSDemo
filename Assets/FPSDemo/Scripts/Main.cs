@@ -21,12 +21,14 @@ namespace FPSDemo
 
         public static Main Instance { get; private set; }
 
-        public InputController InputController { get; private set; }
+        public InputCommandsController InputCommandsController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
         public WeaponsController WeaponsController { get; private set; }
         public TeammateController TeammateController { get; private set; }
         public PlayerController PlayerController { get; private set; }
         public EnemiesController EnemiesController { get; private set; }
+        public PauseController PauseController { get; private set; }
+        public LightsController LightsController { get; private set; }
 
         public SaveType SaveType;
 
@@ -45,18 +47,28 @@ namespace FPSDemo
             else
             {
                 Instance = this;
+
+                CheckVersion();
+                
                 _screenshotDirectory = CreateDirectory("Screenshots");
                 _savesDirectory = CreateDirectory("Saves");
             }
         }
 
+        private void CheckVersion()
+        {
+            var lastVersion = PlayerPrefs.GetString("Version", ""); 
+            if (lastVersion.Equals(Application.version))
+            {
+                return;
+            }
+            
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetString("Version", Application.version);
+        }
+
         private void Start()
         {
-#if !UNITY_EDITOR
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-#endif
-
             // В будущем планируется ввести контроллер инвентаря
             // Количество патронов в каждом оружии будет храниться там
             // Состояние тиммейта не сохраняется. Скорее всего он будет в последствии удален как не нужный
@@ -68,11 +80,14 @@ namespace FPSDemo
             RegisterController<PlayerController, PlayerModel>(PlayerController);
             EnemiesController = FindObjectOfType<EnemiesController>();
             RegisterController<EnemiesController, EnemiesModel>(EnemiesController);
+            LightsController = FindObjectOfType<LightsController>();
+            RegisterController<LightsController, LightsModel>(LightsController);
 
 
-            InputController = gameObject.AddComponent<InputController>();
+            InputCommandsController = gameObject.AddComponent<InputCommandsController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
-
+            PauseController = gameObject.AddComponent<PauseController>();
+            
             CheckInit();
         }
 
@@ -82,7 +97,7 @@ namespace FPSDemo
             where C : BaseController<M>
             where M : BaseModel
         {
-            if (!controller.IsInitialized)
+            if (controller && !controller.IsInitialized)
             {
                 _uninitedControllersCounter++;
                 controller.OnControllerInitialize += OnControllerInitialize;
@@ -101,7 +116,14 @@ namespace FPSDemo
             {
                 _isInitialized = true;
                 OnInitialize?.Invoke();
+                PauseController.Init();
+                InputCommandsController.OnCommandsUpdate += OnInputCommands;
             }
+        }
+
+        private void OnInputCommands()
+        {
+            InputCommandsController.Commands.ForEach(command => command.Execute());
         }
 
         #endregion
@@ -141,8 +163,8 @@ namespace FPSDemo
 
 
             _saver.AddSavable(PlayerController);
-            _saver.AddSavable(WeaponsController);
-            _saver.AddSavable(EnemiesController);
+//            _saver.AddSavable(WeaponsController);
+//            _saver.AddSavable(EnemiesController);
             _saver.Save(_savesDirectory);
         }
 
@@ -151,8 +173,8 @@ namespace FPSDemo
             SetSaver();
 
             _saver.AddLoadable(PlayerController);
-            _saver.AddLoadable(WeaponsController);
-            _saver.AddLoadable(EnemiesController);
+//            _saver.AddLoadable(WeaponsController);
+//            _saver.AddLoadable(EnemiesController);
             _saver.Load(_savesDirectory);
         }
 
@@ -170,12 +192,12 @@ namespace FPSDemo
                 ? PlayerPrefs.GetString(prefsName)
                 : Path.Combine(Application.dataPath, name);
 
-            PlayerPrefs.SetString(prefsName, directory);
             if (!Directory.Exists(directory))
             {
+                PlayerPrefs.SetString(prefsName, directory);
                 Directory.CreateDirectory(directory);
             }
-
+            
             return directory;
         }
 

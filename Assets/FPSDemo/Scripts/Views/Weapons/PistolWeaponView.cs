@@ -27,6 +27,7 @@ namespace FPSDemo
         private Light _light;
 
         private Vector3 _rotationStart;
+        private ParticleSystem _particleSystem;
 
         protected override void OnInitialize()
         {
@@ -35,12 +36,19 @@ namespace FPSDemo
             _trigger.OnReloadEnd += OnReloadEnd;
             _trigger.OnReloadRotationStart += OnReloadRotationStart;
             _trigger.OnReloadRotationEnd += OnReloadRotationEnd;
+            _trigger.OnMuzzleFire += OnMuzzleFire;
             _light = _firepoint.GetComponent<Light>();
+            _particleSystem = _firepoint.GetComponent<ParticleSystem>();
             _model.OnShoot += OnShoot;
             _model.OnReload += OnReload;
             _model.OnTakeAim += OnTakeAim;
             _model.OnRealizeAim += OnRealizeAim;
             _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
+        }
+
+        private void OnMuzzleFire()
+        {
+            StartCoroutine(ShowReflect());
         }
 
         private void OnRealizeAim()
@@ -93,13 +101,12 @@ namespace FPSDemo
         {
             _animator.SetInteger("Bullets", _model.BulletsCountCurrent);
             _animator.SetTrigger("Fire");
-            StartCoroutine(ShowReflect());
         }
 
         private IEnumerator ShowReflect()
         {
-            yield return new WaitForSeconds(0.1f);
             _light.enabled = true;
+            _particleSystem.Play();
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             _light.enabled = false;
         }

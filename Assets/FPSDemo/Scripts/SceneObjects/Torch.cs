@@ -14,7 +14,7 @@ namespace FPSDemo
 
         private void FixedUpdate()
         {
-            _light.intensity = 1 + IntenseCurve.Evaluate(Time.time);
+            _light.intensity = IntenseCurve.Evaluate(Time.time);
         }
 
         public void LightningOff()

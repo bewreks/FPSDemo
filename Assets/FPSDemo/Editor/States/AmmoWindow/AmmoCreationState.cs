@@ -10,7 +10,7 @@ namespace FPSDemoEditor.Ammo
     {
 
         private float _damage;
-        private LayerMask _mask;
+//        private LayerMask _mask;
 
         protected M _model;
         
@@ -28,7 +28,7 @@ namespace FPSDemoEditor.Ammo
             container.AddComponent<C>();
 
             _model.Damage = _damage;
-            _model.Mask = _mask;
+//            _model.Mask = _mask;
             
             OnCreate();
         }

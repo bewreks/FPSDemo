@@ -11,7 +11,7 @@ namespace FPSDemo
         {
         }
 
-        public void Move(float x, float y)
+        public void Move(float x, float y, float deltaTime)
         {
             if (_model.IsDead)
             {
@@ -23,7 +23,7 @@ namespace FPSDemo
 
             movement.y = _model.Gravity;
 
-            movement *= Time.deltaTime;
+            movement *= deltaTime;
             movement = transform.TransformDirection(movement);
             _model.MoveVector = movement;
         }

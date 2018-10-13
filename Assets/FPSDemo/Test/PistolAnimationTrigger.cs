@@ -9,6 +9,7 @@ public class PistolAnimationTrigger : MonoBehaviour
 	public UnityAction OnReloadEnd;
 	public UnityAction OnReloadRotationStart;
 	public UnityAction OnReloadRotationEnd;
+	public UnityAction OnMuzzleFire;
 
 	public void EndReloadRotation()
 	{
@@ -23,5 +24,10 @@ public class PistolAnimationTrigger : MonoBehaviour
 	public void ReloadEnd()
 	{
 		OnReloadEnd?.Invoke();
+	}
+
+	public void MuzzleFire()
+	{
+		OnMuzzleFire?.Invoke();
 	}
 }
