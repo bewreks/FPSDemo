@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace FPSDemo
 {
@@ -8,6 +9,8 @@ namespace FPSDemo
     {
         private Transform _firepoint;
 
+        public UnityAction OnFireEnd { get; set; }
+        public UnityAction<GameObject> OnBulletInstatiate { get; set; }
         public GameObject GameObject => gameObject;
 
         public GameObject Owner;
@@ -29,22 +32,23 @@ namespace FPSDemo
                 SetOwner(Owner);
             }
         }
-        
-        public void Fire()
+
+
+        public bool Fire()
         {
             if (_model.IsEmpty)
             {
-                return;
+                return false;
             }
 
             if (CantFire())
             {
-                return;
+                return false;
             }
 
             if (_model.IsTimeout)
             {
-                return;
+                return false;
             }
 
             _model.BulletsCountCurrent--;
@@ -52,6 +56,7 @@ namespace FPSDemo
             OnShoot();
 
             StartCoroutine(Shoot());
+            return true;
         }
 
         private IEnumerator Shoot()
@@ -66,8 +71,12 @@ namespace FPSDemo
                 var forward = hitPoint - _firepoint.position;
                 ammoRotation = Quaternion.LookRotation(forward);
             }
+
             var ammo = Instantiate(_model.AmmoPrefab, _firepoint.position, ammoRotation);
             ammo.GetComponent<IFire>().Fire(_model.Power, _model.Owner);
+            OnBulletInstatiate?.Invoke(ammo);
+
+            OnFireEnd?.Invoke();
         }
 
         public bool IsActive()
